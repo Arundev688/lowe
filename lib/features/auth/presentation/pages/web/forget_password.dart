@@ -7,14 +7,14 @@ import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
 
-class ResetPasswordWeb extends StatefulWidget {
-  const ResetPasswordWeb({super.key});
+class ForgetPasswordWeb extends StatefulWidget {
+  const ForgetPasswordWeb({super.key});
 
   @override
-  State<ResetPasswordWeb> createState() => _ResetPasswordWebState();
+  State<ForgetPasswordWeb> createState() => _ForgetPasswordWebState();
 }
 
-class _ResetPasswordWebState extends State<ResetPasswordWeb> {
+class _ForgetPasswordWebState extends State<ForgetPasswordWeb> {
   final _emailController = TextEditingController();
 
 
