@@ -39,6 +39,7 @@ dependencies:
   flutter_screenutil: ^5.9.3
   google_fonts: ^6.2.1
   go_router: ^14.2.1
+  syncfusion_flutter_charts: ^26.1.41+1
 
 
 dev_dependencies:

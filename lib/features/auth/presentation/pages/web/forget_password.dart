@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/button.dart';
 import 'package:lowes/core/commonwidgets/textfield.dart';
 import 'package:lowes/core/constants/constants.dart';
@@ -64,7 +65,9 @@ class _ForgetPasswordWebState extends State<ForgetPasswordWeb> {
                         height: ScreenDimensions.screenHeight(context) * 0.03),
                     CustomButton(
                       text: Constants.sendResetLink,
-                      onPressed: () async {},
+                      onPressed: () async {
+                        context.go('/resetWeb');
+                      },
                     ),
                     SizedBox(
                         height: ScreenDimensions.screenHeight(context) * 0.04),
