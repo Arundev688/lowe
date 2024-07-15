@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:lowes/core/constants/constants.dart';
+import 'package:lowes/core/route/api.dart';
 import 'package:lowes/core/route/config.dart';
 import 'package:lowes/core/theme/color.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  ApiRoutes.baseUrl = 'http://34.205.146.204/';
   runApp(const MyApp());
 }
 

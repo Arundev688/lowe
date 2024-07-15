@@ -3,15 +3,16 @@ import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
+import 'package:lowes/features/auth/presentation/pages/web/dashboard.dart';
 
-class DashboardWeb extends StatefulWidget {
-  const DashboardWeb({super.key});
+class HomeWeb extends StatefulWidget {
+  const HomeWeb({super.key});
 
   @override
-  State<DashboardWeb> createState() => _DashboardWebState();
+  State<HomeWeb> createState() => _HomeWebState();
 }
 
-class _DashboardWebState extends State<DashboardWeb> {
+class _HomeWebState extends State<HomeWeb> {
   int _selectedIndex = 0;
 
   @override
@@ -63,7 +64,7 @@ class _DashboardWebState extends State<DashboardWeb> {
           body: IndexedStack(
             index: _selectedIndex,
             children: const [
-              Text("Dashboard"),
+              DashboardWeb(),
               Text("Onboard Assets"),
               Text("Associate Entitles"),
               Text("Live Tracking"),
