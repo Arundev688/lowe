@@ -1,10 +1,10 @@
 import 'package:lowes/features/auth/domain/entities/login_data.dart';
 
-class LoginResponse {
+class LoginResponse extends DomainLoginResponse {
   User? user;
   Tokens? tokens;
 
-  LoginResponse({this.user, this.tokens});
+  LoginResponse({this.user, this.tokens}):super(user: user,tokens: tokens);
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
     return LoginResponse(
@@ -24,22 +24,22 @@ class LoginResponse {
     return data;
   }
 
-  DomainLoginResponse toDomain() {
-    return DomainLoginResponse(
-      user: user!.toDomain(),
-      tokens: tokens!.toDomain(),
-    );
-  }
 }
 
-class User {
+class User extends DomainUser {
   String? role;
   bool? isEmailVerified;
   String? name;
   String? email;
   String? id;
 
-  User({this.role, this.isEmailVerified, this.name, this.email, this.id});
+  User({this.role, this.isEmailVerified, this.name, this.email, this.id}) : super(
+    role: role,
+    isEmailVerified: isEmailVerified,
+    name: name,
+    email: email,
+    id: id
+  );
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -61,27 +61,19 @@ class User {
     return data;
   }
 
-  DomainUser toDomain() {
-    return DomainUser(
-      role: role!,
-      isEmailVerified: isEmailVerified!,
-      name: name!,
-      email: email!,
-      id: id!,
-    );
-  }
 }
 
-class Tokens {
+class Tokens extends DomainTokens {
   Access? access;
   Access? refresh;
 
-  Tokens({this.access, this.refresh});
+  Tokens({this.access, this.refresh}):super(access: access,refresh: refresh);
 
   factory Tokens.fromJson(Map<String, dynamic> json) {
     return Tokens(
       access: json['access'] != null ? Access.fromJson(json['access']) : null,
-      refresh: json['refresh'] != null ? Access.fromJson(json['refresh']) : null,
+      refresh:
+          json['refresh'] != null ? Access.fromJson(json['refresh']) : null,
     );
   }
 
@@ -96,19 +88,13 @@ class Tokens {
     return data;
   }
 
-  DomainTokens toDomain() {
-    return DomainTokens(
-      access: access!.toDomain(),
-      refresh: refresh!.toDomain(),
-    );
-  }
 }
 
-class Access {
+class Access  extends DomainAccess {
   String? token;
   String? expires;
 
-  Access({this.token, this.expires});
+  Access({this.token, this.expires}):super(token: token,expires: expires);
 
   factory Access.fromJson(Map<String, dynamic> json) {
     return Access(
@@ -130,4 +116,7 @@ class Access {
       expires: expires!,
     );
   }
+
+  @override
+  List<Object?> get props => [token,expires];
 }

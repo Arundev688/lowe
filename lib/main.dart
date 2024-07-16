@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:lowes/core/constants/constants.dart';
-import 'package:lowes/core/route/api.dart';
 import 'package:lowes/core/route/config.dart';
 import 'package:lowes/core/theme/color.dart';
+import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
+import 'package:lowes/init_dependencies.dart';
+import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  ApiRoutes.baseUrl = 'http://34.205.146.204/';
-  runApp(const MyApp());
+  await initDepedencies();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => serviceLocator<AuthProvider>()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

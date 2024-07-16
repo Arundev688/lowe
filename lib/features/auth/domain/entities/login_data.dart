@@ -1,21 +1,21 @@
 import 'package:equatable/equatable.dart';
 
 class DomainLoginResponse extends Equatable {
-  final DomainUser user;
-  final DomainTokens tokens;
+  final DomainUser? user;
+  final DomainTokens? tokens;
 
-  DomainLoginResponse({required this.user, required this.tokens});
+  DomainLoginResponse({this.user,this.tokens});
 
   @override
   List<Object?> get props => [user, tokens];
 }
 
 class DomainUser extends Equatable {
-  final String role;
-  final bool isEmailVerified;
-  final String name;
-  final String email;
-  final String id;
+  final String? role;
+  final bool? isEmailVerified;
+  final String? name;
+  final String? email;
+  final String? id;
 
   DomainUser({
     required this.role,
@@ -30,8 +30,8 @@ class DomainUser extends Equatable {
 }
 
 class DomainTokens extends Equatable {
-  final DomainAccess access;
-  final DomainAccess refresh;
+  final DomainAccess? access;
+  final DomainAccess? refresh;
 
   DomainTokens({required this.access, required this.refresh});
 
@@ -40,8 +40,8 @@ class DomainTokens extends Equatable {
 }
 
 class DomainAccess extends Equatable {
-  final String token;
-  final String expires;
+  final String? token;
+  final String? expires;
 
   DomainAccess({required this.token, required this.expires});
 
