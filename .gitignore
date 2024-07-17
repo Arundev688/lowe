@@ -33,7 +33,7 @@ migrate_working_dir/
 
 
 # Ignore secret folder
-/lib/secrets/
+/lib/secrets/base_url.dart
 
 
 # Symbolication related
