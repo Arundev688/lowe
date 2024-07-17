@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/button.dart';
 import 'package:lowes/core/commonwidgets/textfield.dart';
+import 'package:lowes/core/commonwidgets/toast.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
+import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:provider/provider.dart';
 
 class WebLogin extends StatefulWidget {
@@ -24,6 +26,8 @@ class _WebLoginState extends State<WebLogin> {
 
   @override
   Widget build(BuildContext context) {
+    final authState = Provider.of<AuthStateProvider>(context);
+
     return Consumer<AuthProvider>(builder: (ctx, provider, child) {
       return Scaffold(
         body: Row(
@@ -131,36 +135,20 @@ class _WebLoginState extends State<WebLogin> {
                       SizedBox(
                           height: ScreenDimensions.screenHeight(context) *
                               0.03),
+                      authState.state == AuthState.loading ?
+                      const Center(child: CircularProgressIndicator()) :
                       CustomButton(
                         text: Constants.login,
                         onPressed: () async {
-                          setState(() {
+                          final errorMessage = provider.validateLoginFields(_emailController.text, _passwordController.text);
+                          if (errorMessage != null) {
+                            showSnackBar(context, errorMessage, true); // Display error message
+                            return; // Prevent login call if validation fails
+                          } else {
                             provider.userLogin(_emailController.text, _passwordController.text, context);
-                          });
+                          }
                         },
                       ),
-                      /*      SizedBox(
-                          height: ScreenDimensions.screenHeight(context) * 0.03),
-                      Center(
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: Constants.noAccount,
-                                style: AppTextStyle.textPrime,
-                              ),
-                              TextSpan(
-                                text: Constants.signUpHere,
-                                style: const TextStyle(
-                                    color: Colors.blue, fontWeight: FontWeight.bold),
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () => Navigator.pushNamed(context,
-                                      '/signup'), // Navigate to signup screen
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),*/
                     ],
                   ),
                 ))

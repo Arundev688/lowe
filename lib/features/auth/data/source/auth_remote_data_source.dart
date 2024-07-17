@@ -21,9 +21,10 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       final baseurl = ApiRoutes().signIn;
       final response = await dio!
-          .post(baseurl, data: {"email": password, "password": email});
+          .post(baseurl, data: {"email": email, "password": password});
       if (response.statusCode == 200) {
-        return LoginResponse.fromJson(json.decode(response.data));
+        final responseDecode = jsonDecode(response.toString());
+        return LoginResponse.fromJson(responseDecode as Map<String, dynamic>);
       } else {
         return LoginResponse();
       }

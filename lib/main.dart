@@ -3,6 +3,7 @@ import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/route/config.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
+import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:lowes/init_dependencies.dart';
 import 'package:provider/provider.dart';
 
@@ -13,6 +14,7 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => serviceLocator<AuthProvider>()),
+        ChangeNotifierProvider(create: (_) => serviceLocator<AuthStateProvider>()),
       ],
       child: const MyApp(),
     ),
