@@ -6,13 +6,14 @@ import 'package:lowes/features/auth/domain/repository/auth_repository.dart';
 import 'package:lowes/features/auth/domain/usecase/user_login_usecase.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
+import 'package:lowes/secrets/base_url.dart';
 
 final serviceLocator = GetIt.instance;
 
 Future<void> initDepedencies() async {
   _initAuth();
   _initAuthState();
-  final val = ApiRoutes.baseUrl = 'http://34.205.146.204/';
+  final val = ApiRoutes.baseUrl = baseUrl;
   serviceLocator.registerLazySingleton(() => val);
 }
 

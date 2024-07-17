@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lowes/core/route/constant.dart';
+import 'package:lowes/features/auth/presentation/pages/mobile/dashboard.dart';
 import 'package:lowes/features/auth/presentation/pages/mobile/login.dart';
 import 'package:lowes/features/auth/presentation/pages/web/home.dart';
 import 'package:lowes/features/auth/presentation/pages/web/forget_password.dart';
@@ -14,7 +15,7 @@ class MyAppRouter {
       name: MyAppRouteConstants.home,
       path: '/',
       builder: (BuildContext context, GoRouterState state) {
-        return const Homescreen();
+        return const HomeScreen();
       },
     ),
 
@@ -56,6 +57,13 @@ class MyAppRouter {
       path: '/loginMobile',
       builder: (BuildContext context, GoRouterState state) {
         return const MobileLogin();
+      },
+    ),
+    GoRoute(
+      name: MyAppRouteConstants.dashboardMobile,
+      path: '/dashboardMobile',
+      builder: (BuildContext context, GoRouterState state) {
+        return const DashboardMobile();
       },
     ),
 

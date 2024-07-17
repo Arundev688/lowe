@@ -31,6 +31,11 @@ migrate_working_dir/
 .pub/
 /build/
 
+
+# Ignore secret folder
+/lib/secrets/
+
+
 # Symbolication related
 app.*.symbols
 

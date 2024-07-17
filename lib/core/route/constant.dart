@@ -11,6 +11,7 @@ class MyAppRouteConstants {
 
   //mobile routes
    static const String loginMobile = 'loginMobile';
+   static const String dashboardMobile = 'dashboardMobile';
 
 
 }

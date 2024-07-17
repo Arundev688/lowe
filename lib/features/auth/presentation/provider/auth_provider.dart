@@ -15,7 +15,7 @@ class AuthProvider extends ChangeNotifier {
   });
 
   Future<void> userLogin(
-      String email, String password, BuildContext context) async {
+      String email, String password, BuildContext context,bool isMobile) async {
     authStateProvider.setState(AuthState.loading);
     final result =
         await loginUseCase(LoginParams(email: email, password: password));
@@ -27,7 +27,7 @@ class AuthProvider extends ChangeNotifier {
     }, (success) async {
       authStateProvider.setState(AuthState.success);
       showSnackBar(context, "Login Success");
-      context.go('/dashboardWeb');
+      isMobile ? context.go('/dashboardMobile') : context.go('/dashboardWeb')  ;
       notifyListeners();
     });
   }
@@ -39,9 +39,7 @@ class AuthProvider extends ChangeNotifier {
       return 'Please enter a valid email address.';
     } else if (password.isEmpty) {
       return 'Please enter your password.';
-    } /*else if (password.length < 6) {
-      return 'Password must be at least 6 characters.';
-    }*/
+    }
     return null; // Validation successful
   }
 }

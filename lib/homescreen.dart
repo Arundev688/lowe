@@ -3,14 +3,14 @@ import 'package:lowes/core/responsive/responsive.dart';
 import 'package:lowes/features/auth/presentation/pages/mobile/login.dart';
 import 'package:lowes/features/auth/presentation/pages/web/login.dart';
 
-class Homescreen extends StatefulWidget {
-  const Homescreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
 
   @override
-  State<Homescreen> createState() => _HomescreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomescreenState extends State<Homescreen> {
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
