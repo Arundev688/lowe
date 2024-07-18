@@ -1,18 +1,40 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
 import 'package:lowes/features/auth/domain/usecase/user_login_usecase.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   final UserLoginUseCase loginUseCase;
   final AuthStateProvider authStateProvider;
 
+
+
   AuthProvider({
     required this.loginUseCase,
     required this.authStateProvider,
   });
+
+  Future<void> setToken({String? token}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('token', token!);
+  }
+
+  Future<void> setUserId({String? id}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userId', id!);
+  }
+
+  void deleteData({required BuildContext context}) async {
+    final preferences = await SharedPreferences.getInstance();
+    await preferences.clear();
+    await setToken(token: null);
+    await setUserId(id: null);
+    if (!context.mounted) return;
+    context.go('/');
+  }
+
 
   Future<void> userLogin(
       String email, String password, BuildContext context,bool isMobile) async {
@@ -27,7 +49,10 @@ class AuthProvider extends ChangeNotifier {
     }, (success) async {
       authStateProvider.setState(AuthState.success);
       showSnackBar(context, "Login Success");
-      isMobile ? context.go('/dashboardMobile') : context.go('/dashboardWeb')  ;
+      await setToken(token: success.tokens?.access?.token.toString());
+      await setUserId(id: success.user?.id);
+      if (!context.mounted) return;
+      isMobile ? context.go('/dashboardMobile') : context.go('/dashboardWeb');
       notifyListeners();
     });
   }
@@ -35,7 +60,7 @@ class AuthProvider extends ChangeNotifier {
   String? validateLoginFields(String email, String password) {
     if (email.isEmpty) {
       return 'Please enter your email address.';
-    } else if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$").hasMatch(email)) {
+    } else if (!RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$").hasMatch(email)) {
       return 'Please enter a valid email address.';
     } else if (password.isEmpty) {
       return 'Please enter your password.';

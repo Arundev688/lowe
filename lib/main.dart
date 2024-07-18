@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/route/config.dart';
 import 'package:lowes/core/theme/color.dart';
@@ -9,6 +10,10 @@ import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    statusBarIconBrightness: Brightness.dark, // navigation bar color
+    statusBarColor: secondary, // status bar color
+  ));
   await initDepedencies();
   runApp(
     MultiProvider(

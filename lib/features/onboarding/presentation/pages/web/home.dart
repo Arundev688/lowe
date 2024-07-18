@@ -3,7 +3,7 @@ import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
-import 'package:lowes/features/auth/presentation/pages/web/dashboard.dart';
+import 'package:lowes/features/onboarding/presentation/pages/web/dashboard.dart';
 
 class HomeWeb extends StatefulWidget {
   const HomeWeb({super.key});

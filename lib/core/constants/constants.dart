@@ -20,7 +20,7 @@ class Constants {
   static const confirmPassword = 'Confirm Password';
   static const resetPassword = 'Reset Password';
 
-  //dashboard screen
+  //dashboard web
   static const List<String> tabBarTitles = [
     'Dashboard',
     'Onboard assets',
@@ -28,5 +28,9 @@ class Constants {
     'Live Tracking'
   ];
 
+  //dashboard mobile
+  static const scanOnboard = 'Onboard';
+  static const scanAssociate = 'Onboard & Associate';
+  static const dashboardInfo = 'Hi ! What you looking for ? ';
 
 }
