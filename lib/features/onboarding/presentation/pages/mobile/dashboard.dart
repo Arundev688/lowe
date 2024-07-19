@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:lowes/core/commonwidgets/loader.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
+import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
 import 'package:lowes/features/onboarding/presentation/widgets/elevation_container.dart';
-import 'package:simple_barcode_scanner/enum.dart';
-import 'package:simple_barcode_scanner/simple_barcode_scanner.dart';
-
+import 'package:lowes/features/onboarding/presentation/widgets/onboard_alertdialog.dart';
+import 'package:provider/provider.dart';
 
 class DashboardMobile extends StatefulWidget {
   const DashboardMobile({super.key});
@@ -17,9 +18,11 @@ class DashboardMobile extends StatefulWidget {
 }
 
 class _DashboardMobileState extends State<DashboardMobile> {
-  String result = '';
+
   @override
   Widget build(BuildContext context) {
+    final onboardProvider = Provider.of<OnboardProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         body: Padding(
@@ -28,16 +31,16 @@ class _DashboardMobileState extends State<DashboardMobile> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(Constants.dashboardInfo,style: AppTextStyle.textPrime),
-              SizedBox(
-                  height: ScreenDimensions.screenHeight(context) * 0.04),
-              containers(Constants.scanOnboard),
-              SizedBox(
-                  height: ScreenDimensions.screenHeight(context) * 0.06),
-              containers(Constants.scanAssociate),
-              SizedBox(
-                  height: ScreenDimensions.screenHeight(context) * 0.06),
-              Text('Scan Result: $result'),
+              onboardProvider.scanResult.isNotEmpty
+                  ? showAlert(
+                      context: context, name: "", provider: onboardProvider)
+                  : const Loader(),
+              Text(Constants.dashboardInfo, style: AppTextStyle.textPrime),
+              SizedBox(height: ScreenDimensions.screenHeight(context) * 0.04),
+              containers(Constants.scanOnboard, onboardProvider),
+              SizedBox(height: ScreenDimensions.screenHeight(context) * 0.06),
+              containers(Constants.scanAssociate, onboardProvider),
+              SizedBox(height: ScreenDimensions.screenHeight(context) * 0.06),
             ],
           ),
         ),
@@ -45,23 +48,14 @@ class _DashboardMobileState extends State<DashboardMobile> {
     );
   }
 
-  Widget containers(String title) {
+  Widget containers(String title, OnboardProvider provider) {
     return customContainer(
       width: double.infinity,
       height: ScreenDimensions.screenHeight(context) * 0.12,
       containerColor: white,
-      onTap:() async {
-        var res = await Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const SimpleBarcodeScannerPage(
-                scanType: ScanType.defaultMode,
-              ),
-            ));
+      onTap: () async {
         setState(() {
-          if (res is String) {
-            result = res;
-          }
+          provider.scanNavigation(context);
         });
       },
       radius: 12.0,
