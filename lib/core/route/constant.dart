@@ -12,7 +12,7 @@ class MyAppRouteConstants {
   //mobile routes
    static const String loginMobile = 'loginMobile';
    static const String dashboardMobile = 'dashboardMobile';
-   static const String scanResult = 'ScanResult';
+   static const String scanResult = '/ScanResult';
 
 
 }

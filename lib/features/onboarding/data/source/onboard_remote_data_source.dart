@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:fpdart/fpdart.dart';
 import 'package:lowes/core/error/exceptions.dart';
 import 'package:lowes/core/route/api.dart';
 import 'package:lowes/core/service/dio_service.dart';
@@ -12,6 +13,15 @@ abstract class OnboardRemoteDateSource {
     required String data,
     required String createdBy,
   });
+  Future<Unit> association ({
+    required String packageData,
+    required String packageType,
+    required String sensorData,
+    required String sensorType,
+    required String createdBy,
+});
+
+
 }
 
 class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
@@ -32,9 +42,7 @@ class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
         "createdBy": createdBy,
       });
       if(kDebugMode){
-        print("onboard code :: +${response.statusCode}");
         print("onboard data :: +${response.data.toString()}");
-        print("onboard header :: +${response.headers}");
       }
       if (response.statusCode == 200) {
         final responseDecode = jsonDecode(response.toString());
@@ -46,4 +54,32 @@ class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
       throw ServerExceptions(e.toString());
     }
   }
+
+  @override
+  Future<Unit> association({required String packageData, required String packageType, required String sensorData, required String sensorType, required String createdBy}) async{
+    final baseurl = ApiRoutes().onBoard;
+    try {
+      final response = await dio!.post(baseurl, data: {
+        "packageScannedInfo":{
+          "data":packageData,
+          "type":packageType
+        },
+        "sensorScannedInfo":{
+          "data":sensorData,
+          "type":sensorType
+        },
+        "createdBy": createdBy,
+      });
+      if (response.statusCode == 200) {
+        return unit;
+      } else {
+        return unit;
+      }
+    } catch (e) {
+      throw ServerExceptions(e.toString());
+    }
+  }
+
+
+
 }

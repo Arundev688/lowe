@@ -11,4 +11,13 @@ abstract interface class OnboardRepository{
     required String createdBy,
   });
 
+  Future<Either<Failures,Unit>> association ({
+    required String packageData,
+    required String packageType,
+    required String sensorData,
+    required String sensorType,
+    required String createdBy,
+  });
+
+
 }

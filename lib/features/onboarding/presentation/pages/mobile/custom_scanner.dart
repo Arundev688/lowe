@@ -1,11 +1,8 @@
-
-
-
-library custom_barcode_scanner;
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lowes/core/route/constant.dart';
+import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:simple_barcode_scanner/enum.dart';
 import 'package:simple_barcode_scanner/screens/shared.dart';
 
@@ -31,6 +28,8 @@ class CustomBarcodeScannerPage extends StatelessWidget {
   /// Center Title
   final bool? centerTitle;
 
+  final String? scanTitle;
+
 
   /// appBarTitle and centerTitle support in web and window only
   /// Remaining fields support in only mobile devices
@@ -42,10 +41,12 @@ class CustomBarcodeScannerPage extends StatelessWidget {
     this.scanType = ScanType.defaultMode,
     this.appBarTitle,
     this.centerTitle,
+    this.scanTitle,
   });
 
   @override
   Widget build(BuildContext context) {
+    final scanResultProvider = Provider.of<OnboardProvider>(context);
     return BarcodeScanner(
       lineColor: lineColor,
       cancelButtonText: cancelButtonText,
@@ -55,7 +56,10 @@ class CustomBarcodeScannerPage extends StatelessWidget {
       centerTitle: centerTitle,
       onScanned: (res) {
         if(res.isNotEmpty){
-          context.goNamed(MyAppRouteConstants.scanResult,queryParameters: {'scanResult':res,'scanTitle':appBarTitle});
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            scanResultProvider.setScanResult(res);
+        //    context.goNamed(MyAppRouteConstants.scanResult, queryParameters: {'scanResult': res, 'scanTitle': scanTitle});
+          });
         }
       },
     );

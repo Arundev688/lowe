@@ -7,6 +7,9 @@ class AppTextStyle {
   static TextStyle title = GoogleFonts.inter(
       textStyle: const TextStyle(color: black, fontWeight: FontWeight.w600,fontSize: 19));
 
+  static TextStyle titleWhite = GoogleFonts.inter(
+      textStyle: const TextStyle(color: white, fontWeight: FontWeight.w600,fontSize: 19));
+
   static TextStyle subTitle = GoogleFonts.inter(
       textStyle: const TextStyle(color: black, fontWeight: FontWeight.w400,fontSize: 17));
 

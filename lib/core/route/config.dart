@@ -67,16 +67,15 @@ class MyAppRouter {
         return const DashboardMobile();
       },
     ),
-    GoRoute(
-      name: MyAppRouteConstants.scanResult,
-      path: '/ScanResult',
-      builder: (BuildContext context, GoRouterState state) {
-        return ScanResult(
-          scanResult: state.uri.queryParameters['scanResult'],
-          title: state.uri.queryParameters['scanTitle'],
-        );
-      },
-    ),
 
+
+    GoRoute(
+      name: "/ScanResult",
+      path: "/ScanResult",
+      builder: (context, state) => ScanResult(
+        scanResult: state.pathParameters['scanResult'],
+        title:state.pathParameters['scanTitle'],
+      ),
+    )
   ]);
 }

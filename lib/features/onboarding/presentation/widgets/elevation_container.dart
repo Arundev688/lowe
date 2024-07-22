@@ -9,11 +9,9 @@ customContainer({
   Color? containerColor,
   double? radius,
   Widget? child,
-  void Function()? onTap,
+/*  void Function()? onTap,*/
 }) {
-  return InkWell(
-    onTap: onTap,
-    child: Container(
+  return Container(
       height: height,
       width: width,
       padding: const EdgeInsets.all(4),
@@ -30,6 +28,5 @@ customContainer({
             ),
           ]),
       child: child,
-    ),
-  );
+    );
 }

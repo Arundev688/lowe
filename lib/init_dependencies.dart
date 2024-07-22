@@ -9,6 +9,7 @@ import 'package:lowes/features/auth/presentation/provider/auth_state_provider.da
 import 'package:lowes/features/onboarding/data/repository/onboard_repository_impl.dart';
 import 'package:lowes/features/onboarding/data/source/onboard_remote_data_source.dart';
 import 'package:lowes/features/onboarding/domain/repository/onboard_repository.dart';
+import 'package:lowes/features/onboarding/domain/usecase/association_usecase.dart';
 import 'package:lowes/features/onboarding/domain/usecase/onboard_usecase.dart';
 import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
 import 'package:lowes/secrets/base_url.dart';
@@ -47,21 +48,24 @@ void _initAuthState() {
 }
 
 void _initOnboardProvider() {
-
   // Datasource
   serviceLocator
     ..registerFactory<OnboardRemoteDateSource>(
-          () => OnboardRemoteDateSourceImpl(),
+      () => OnboardRemoteDateSourceImpl(),
     )
-  // Repository
+    // Repository
     ..registerFactory<OnboardRepository>(
-          () => OnboardRepositryImpl(
+      () => OnboardRepositryImpl(
         serviceLocator(),
       ),
     )
-  // Usecases
+    // Usecases
     ..registerFactory(() => OnboardUseCase(serviceLocator()))
+    ..registerFactory(() => AssociationUseCase(serviceLocator()))
+
   //provider
-  ..registerLazySingleton(() => OnboardProvider(
-      onboardUseCase: serviceLocator(), authStateProvider: serviceLocator()));
+    ..registerLazySingleton(() => OnboardProvider(
+        onboardUseCase: serviceLocator(),
+        authStateProvider: serviceLocator(),
+        associationUseCase: serviceLocator()));
 }
