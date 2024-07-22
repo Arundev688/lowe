@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:lowes/core/error/exceptions.dart';
 import 'package:lowes/core/route/api.dart';
 import 'package:lowes/core/service/dio_service.dart';
@@ -30,6 +31,11 @@ class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
         },
         "createdBy": createdBy,
       });
+      if(kDebugMode){
+        print("onboard code :: +${response.statusCode}");
+        print("onboard data :: +${response.data.toString()}");
+        print("onboard header :: +${response.headers}");
+      }
       if (response.statusCode == 200) {
         final responseDecode = jsonDecode(response.toString());
         return OnboardResponse.fromJson(responseDecode as Map<String, dynamic>);

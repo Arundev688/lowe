@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:lowes/core/route/constant.dart';
 import 'package:lowes/features/onboarding/presentation/pages/mobile/dashboard.dart';
 import 'package:lowes/features/auth/presentation/pages/mobile/login.dart';
+import 'package:lowes/features/onboarding/presentation/pages/mobile/scan_result.dart';
 import 'package:lowes/features/onboarding/presentation/pages/web/home.dart';
 import 'package:lowes/features/auth/presentation/pages/web/forget_password.dart';
 import 'package:lowes/features/auth/presentation/pages/web/login.dart';
@@ -64,6 +65,16 @@ class MyAppRouter {
       path: '/dashboardMobile',
       builder: (BuildContext context, GoRouterState state) {
         return const DashboardMobile();
+      },
+    ),
+    GoRoute(
+      name: MyAppRouteConstants.scanResult,
+      path: '/ScanResult',
+      builder: (BuildContext context, GoRouterState state) {
+        return ScanResult(
+          scanResult: state.uri.queryParameters['scanResult'],
+          title: state.uri.queryParameters['scanTitle'],
+        );
       },
     ),
 

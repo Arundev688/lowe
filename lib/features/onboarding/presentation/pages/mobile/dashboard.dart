@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:lowes/core/commonwidgets/loader.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
 import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
 import 'package:lowes/features/onboarding/presentation/widgets/elevation_container.dart';
-import 'package:lowes/features/onboarding/presentation/widgets/onboard_alertdialog.dart';
 import 'package:provider/provider.dart';
 
 class DashboardMobile extends StatefulWidget {
@@ -25,16 +23,12 @@ class _DashboardMobileState extends State<DashboardMobile> {
 
     return SafeArea(
       child: Scaffold(
-        body: Padding(
+        body:Padding(
           padding: const EdgeInsets.all(12.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              onboardProvider.scanResult.isNotEmpty
-                  ? showAlert(
-                      context: context, name: "", provider: onboardProvider)
-                  : const Loader(),
               Text(Constants.dashboardInfo, style: AppTextStyle.textPrime),
               SizedBox(height: ScreenDimensions.screenHeight(context) * 0.04),
               containers(Constants.scanOnboard, onboardProvider),
@@ -54,9 +48,7 @@ class _DashboardMobileState extends State<DashboardMobile> {
       height: ScreenDimensions.screenHeight(context) * 0.12,
       containerColor: white,
       onTap: () async {
-        setState(() {
-          provider.scanNavigation(context);
-        });
+          provider.scanNavigation(context,title);
       },
       radius: 12.0,
       child: Row(
@@ -70,4 +62,5 @@ class _DashboardMobileState extends State<DashboardMobile> {
       ),
     );
   }
+
 }

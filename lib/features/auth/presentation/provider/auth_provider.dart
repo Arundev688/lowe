@@ -10,7 +10,6 @@ class AuthProvider extends ChangeNotifier {
   final AuthStateProvider authStateProvider;
 
 
-
   AuthProvider({
     required this.loginUseCase,
     required this.authStateProvider,
@@ -43,7 +42,6 @@ class AuthProvider extends ChangeNotifier {
         await loginUseCase(LoginParams(email: email, password: password));
     await result.fold((failure) {
       authStateProvider.setState(AuthState.error);
-      debugPrint(failure.message);
       showSnackBar(context, "Login Failed: ${failure.message}", true);
       notifyListeners();
     }, (success) async {
