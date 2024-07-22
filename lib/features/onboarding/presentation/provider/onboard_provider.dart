@@ -63,12 +63,21 @@ class OnboardProvider extends ChangeNotifier {
              showSnackBar(context, "Package is Already Associated try with new one");
            }
            context.go("/dashboardMobile");
+           notifyListeners();
          } else {
-           scanBarcode(context);
+           if( _packageData.isNotEmpty &&
+               _sensorDate.isNotEmpty){
+
+           } else {
+             scanBarcode(context);
+             notifyListeners();
+           }
           if(success.isSensor == true){
             _sensorDate = data;
+            notifyListeners();
           } else {
             _packageData = data;
+            notifyListeners();
           }
          }
        }

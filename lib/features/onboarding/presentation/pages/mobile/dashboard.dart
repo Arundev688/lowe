@@ -36,7 +36,9 @@ class _DashboardMobileState extends State<DashboardMobile> {
             actions: [
               IconButton(
                   onPressed: () {
-                    authProvider.deleteData(context: context);
+                    setState(() {
+                      authProvider.deleteData(context: context);
+                    });
                   },
                   icon: const Icon(Icons.logout, color: white))
             ],
