@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
 import 'package:lowes/core/constants/constants.dart';
-import 'package:lowes/core/route/constant.dart';
+import 'package:lowes/core/error/exceptions.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:lowes/features/onboarding/domain/entities/domain_onboard.dart';
 import 'package:lowes/features/onboarding/domain/usecase/association_usecase.dart';
 import 'package:lowes/features/onboarding/domain/usecase/onboard_usecase.dart';
 import 'package:lowes/features/onboarding/presentation/pages/mobile/custom_scanner.dart';
-import 'package:simple_barcode_scanner/enum.dart';
 
 class OnboardProvider extends ChangeNotifier {
   final OnboardUseCase onboardUseCase;
@@ -32,12 +31,16 @@ class OnboardProvider extends ChangeNotifier {
 
   String get packageData => _packageData;
 
+  bool _isAssociation = false;
+
+  bool get isAssociation => _isAssociation;
+
   DomainOnboard? _onboard;
 
   DomainOnboard? get onBoardResult => _onboard;
 
   Future<void> onboard(
-      String type, String data, BuildContext context,String userId,String title) async {
+      String type, String data, BuildContext context,String userId,String title,int count) async {
     authStateProvider.setState(AuthState.loading);
     notifyListeners();
 
@@ -51,34 +54,38 @@ class OnboardProvider extends ChangeNotifier {
        if(title == Constants.scanOnboard){
          authStateProvider.setState(AuthState.success);
          _onboard = success;
+         _isAssociation = false;
          context.go("/dashboardMobile");
          showSnackBar(context, "Onboard Success");
+         setScanResult("");
          notifyListeners();
        } else {
          authStateProvider.setState(AuthState.success);
+         setScanResult("");
          if(success.isAssociated == true){
            if(success.isSensor == true){
-             showSnackBar(context, "Sensor is Already Associated try with new one");
+             showSnackBar(context, "Sensor is Already Associated try with new one",true);
            } else{
-             showSnackBar(context, "Package is Already Associated try with new one");
+             showSnackBar(context, "Package is Already Associated try with new one",true);
            }
            context.go("/dashboardMobile");
            notifyListeners();
          } else {
-           if( _packageData.isNotEmpty &&
-               _sensorDate.isNotEmpty){
-
-           } else {
+           if (count < 2) {
+             _isAssociation = false;
              scanBarcode(context);
              notifyListeners();
+           } else {
+             _isAssociation = true;
+             notifyListeners();
            }
-          if(success.isSensor == true){
-            _sensorDate = data;
-            notifyListeners();
-          } else {
-            _packageData = data;
-            notifyListeners();
-          }
+
+           if (success.isSensor == true) {
+             _sensorDate = data;
+           } else {
+             _packageData = data;
+           }
+           notifyListeners();
          }
        }
     });
@@ -92,24 +99,26 @@ class OnboardProvider extends ChangeNotifier {
     authStateProvider.setState(AuthState.loading);
     notifyListeners();
 
-    final result =
-        await associationUseCase(AssociationParams(
-        packageData, packageType, sensorData, sensorType, createdBy));
-    result.fold((failure) {
-      authStateProvider.setState(AuthState.error);
-      showSnackBar(context, "Association Failed: ${failure.message}", true);
-      _sensorDate = "";
-      _packageData = "";
-      notifyListeners();
-    },(success){
-      authStateProvider.setState(AuthState.success);
-      _sensorDate = "";
-      _packageData = "";
-      context.go("/dashboardMobile");
-      showSnackBar(context, "Association Success");
-      notifyListeners();
-    });
-
+    try{
+      final result =
+      await associationUseCase(AssociationParams(
+          packageData, packageType, sensorData, sensorType, createdBy));
+      result.fold((failure) {
+        authStateProvider.setState(AuthState.error);
+        showSnackBar(context, "Association Failed: ${failure.message}", true);
+        clearScan();
+        context.go("/dashboardMobile");
+        notifyListeners();
+      },(success){
+        authStateProvider.setState(AuthState.success);
+        clearScan();
+        context.go("/dashboardMobile");
+        showSnackBar(context, "Association Success");
+        notifyListeners();
+      });
+    } on ServerExceptions catch (e) {
+       showSnackBar(context, e.message, true);
+    }
   }
 
   void setScanResult(String result) {
@@ -118,23 +127,6 @@ class OnboardProvider extends ChangeNotifier {
   }
 
 
- /* void scanNavigation(BuildContext context, String type) async {
-    var res = await Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => CustomBarcodeScannerPage(
-          scanType: ScanType.defaultMode,
-          scanTitle: type,
-        ),
-      ),
-    );
-    if (res is String) {
-      _scanResult = res;
-      notifyListeners();
-      // Delaying navigation to ensure the widget is not disposed
-      Future.microtask(() => context.goNamed(MyAppRouteConstants.scanResult, queryParameters: {'scanResult': res, 'scanTitle': type}));
-    }
-  }*/
   Future<String?> scanBarcode(BuildContext context) async {
     try{
       final result = await Navigator.push(
@@ -154,8 +146,7 @@ class OnboardProvider extends ChangeNotifier {
   }
 
 
-  void clearScan(BuildContext context){
-    context.go("/dashboardMobile");
+  void clearScan(){
     _scanResult = "";
     _sensorDate = "";
     _packageData= "";

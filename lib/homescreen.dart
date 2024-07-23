@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<bool> checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey("token");
+    return prefs.containsKey("token").toString().isNotEmpty;
   }
 
   @override

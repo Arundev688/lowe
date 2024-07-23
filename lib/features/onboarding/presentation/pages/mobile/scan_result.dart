@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/button.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
@@ -43,7 +44,7 @@ class _ScanResultState extends State<ScanResult> {
       return Scaffold(
         body: Center(
           child: Container(
-            width: ScreenDimensions.screenWidth(context) * 0.95,
+            width: ScreenDimensions.screenWidth(context) * 0.98,
             height: ScreenDimensions.screenHeight(context) * 0.8,
             padding: const EdgeInsets.all(15),
             alignment: Alignment.center,
@@ -67,10 +68,9 @@ class _ScanResultState extends State<ScanResult> {
                         ],
                       )
                     : const SizedBox(),
-                provider.sensorData.isNotEmpty &&
-                    provider.packageData.isNotEmpty
-                    ? association(provider, authState)
-                    : onboard(provider, authState)
+                provider.isAssociation
+                    ? association(provider, authState,context)
+                    : onboard(provider, authState,context)
               ],
             ),
           ),
@@ -79,7 +79,7 @@ class _ScanResultState extends State<ScanResult> {
     });
   }
 
-  Widget onboard(OnboardProvider provider, AuthStateProvider authState) {
+  Widget onboard(OnboardProvider provider, AuthStateProvider authState,BuildContext context) {
     return Column(
       children: [
         Text(widget.title.toString(), style: AppTextStyle.title),
@@ -99,8 +99,9 @@ class _ScanResultState extends State<ScanResult> {
                         borderRadius: 12.0,
                         buttonColor: white,
                         textStyle: AppTextStyle.textPrime,
-                        onPressed: () async {
-                          provider.clearScan(context);
+                        onPressed: () {
+                          context.go("/dashboardMobile");
+                          provider.clearScan();
                         },
                       ),
                     ),
@@ -115,8 +116,13 @@ class _ScanResultState extends State<ScanResult> {
                         onPressed: () async {
                           final prefs = await SharedPreferences.getInstance();
                           var userId = prefs.getString('userId');
-                          if (!mounted) return;
-                          provider.onboard("barcode", provider.scanResult, context, userId.toString(), widget.title.toString());
+                          if (!context.mounted) return;
+                          if(provider.sensorData.toString().isNotEmpty || provider.packageData.toString().isNotEmpty){
+                            provider.onboard("barcode", provider.scanResult, context, userId.toString(), widget.title.toString(),2);
+                          } else {
+                            provider.onboard("barcode", provider.scanResult, context, userId.toString(), widget.title.toString(),1);
+                          }
+
                         },
                       ),
                     ),
@@ -127,7 +133,7 @@ class _ScanResultState extends State<ScanResult> {
     );
   }
 
-  Widget association(OnboardProvider provider, AuthStateProvider authState) {
+  Widget association(OnboardProvider provider, AuthStateProvider authState,BuildContext context) {
     return Column(
       children: [
         Text("Sure you want to associate?", style: AppTextStyle.title),
@@ -137,7 +143,7 @@ class _ScanResultState extends State<ScanResult> {
         authState.state == AuthState.loading
             ? const Center(child: CircularProgressIndicator())
             : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                padding: const EdgeInsets.symmetric(horizontal: 6.0),
                 child: Row(
                   children: [
                     Expanded(
@@ -147,23 +153,24 @@ class _ScanResultState extends State<ScanResult> {
                         borderRadius: 12.0,
                         buttonColor: white,
                         textStyle: AppTextStyle.textPrime,
-                        onPressed: () async {
-                          provider.clearScan(context);
+                        onPressed: (){
+                          context.go("/dashboardMobile");
+                          provider.clearScan();
                         },
                       ),
                     ),
                     SizedBox(
-                        width: ScreenDimensions.screenWidth(context) * 0.06),
+                        width: ScreenDimensions.screenWidth(context) * 0.04),
                     Expanded(
                       flex: 1,
                       child: CustomButton(
-                        text: "Associate Tracker",
+                        text: "Associate",
                         borderRadius: 12.0,
                         buttonColor: textColor,
                         onPressed: () async {
                           final prefs = await SharedPreferences.getInstance();
                           var userId = prefs.getString('userId');
-                          if (!mounted) return;
+                          if (!context.mounted) return;
                           provider.association(
                               provider.packageData,
                               "barcode",

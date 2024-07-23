@@ -13,7 +13,7 @@ abstract class OnboardRemoteDateSource {
     required String data,
     required String createdBy,
   });
-  Future<Unit> association ({
+  Future<Unit?> association ({
     required String packageData,
     required String packageType,
     required String sensorData,
@@ -56,8 +56,8 @@ class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
   }
 
   @override
-  Future<Unit> association({required String packageData, required String packageType, required String sensorData, required String sensorType, required String createdBy}) async{
-    final baseurl = ApiRoutes().onBoard;
+  Future<Unit?> association({required String packageData, required String packageType, required String sensorData, required String sensorType, required String createdBy}) async{
+    final baseurl = ApiRoutes().association;
     try {
       final response = await dio!.post(baseurl, data: {
         "packageScannedInfo":{
@@ -70,10 +70,32 @@ class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
         },
         "createdBy": createdBy,
       });
+      /*if(kDebugMode){
+        print("Association data :: +${{
+        "packageScannedInfo":{
+        "data":packageData,
+        "type":packageType
+        },
+        "sensorScannedInfo":{
+        "data":sensorData,
+        "type":sensorType
+        },
+        "createdBy": createdBy,
+        }}");
+        print("Associate  result is  :: ${unit.toString()}");
+        print("Associate  status code  is  :: ${response.statusCode}");
+        print("Associate  header  is  :: ${response.headers}");
+        print("Associate  base url  is  :: $baseurl");
+      }*/
       if (response.statusCode == 200) {
         return unit;
+      } else if (response.statusCode == 401){
+        throw const ServerExceptions("Please authenticate");
+      }else if (response.statusCode == 400){
+        final errorMessage = response.data['message'] ?? 'Bad Request';
+        throw ServerExceptions(errorMessage);
       } else {
-        return unit;
+        throw const ServerExceptions("An Unexpected Error Occurred dev");
       }
     } catch (e) {
       throw ServerExceptions(e.toString());

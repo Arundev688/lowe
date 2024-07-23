@@ -35,10 +35,10 @@ class _DashboardMobileState extends State<DashboardMobile> {
             title: Text(Constants.appTitle, style: AppTextStyle.titleWhite),
             actions: [
               IconButton(
-                  onPressed: () {
-                    setState(() {
-                      authProvider.deleteData(context: context);
-                    });
+                  onPressed: ()async {
+                    await authProvider.deleteData();
+                    if (!context.mounted) return;
+                    context.go('/loginMobile');
                   },
                   icon: const Icon(Icons.logout, color: white))
             ],
@@ -57,10 +57,6 @@ class _DashboardMobileState extends State<DashboardMobile> {
                           await onboardProvider.scanBarcode(context);
                       if (scanResult != null) {
                         WidgetsBinding.instance.addPostFrameCallback((_) {
-                     /*     context.goNamed(
-                            '/ScanResult',
-                            queryParameters: {'scanResult': scanResult, 'scanTitle': Constants.scanOnboard},
-                          );*/
                           Navigator.push(
                             context,
                             MaterialPageRoute(

@@ -4,13 +4,13 @@ import 'package:lowes/core/usecase/usecase.dart';
 import 'package:lowes/features/onboarding/domain/entities/domain_onboard.dart';
 import 'package:lowes/features/onboarding/domain/repository/onboard_repository.dart';
 
-class AssociationUseCase implements UseCase<Unit, AssociationParams> {
+class AssociationUseCase implements UseCase<Unit?, AssociationParams> {
   final OnboardRepository onboardRepository;
 
   const AssociationUseCase(this.onboardRepository);
 
   @override
-  Future<Either<Failures, Unit>> call(AssociationParams params) async {
+  Future<Either<Failures, Unit?>> call(AssociationParams params) async {
     return onboardRepository.association(packageData: params.packageData,
         packageType: params.packageType,
         sensorData: params.sensorData,

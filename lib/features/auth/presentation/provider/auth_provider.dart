@@ -25,21 +25,19 @@ class AuthProvider extends ChangeNotifier {
     await prefs.setString('userId', id!);
   }
 
-  void deleteData({required BuildContext context}) async {
+   deleteData() async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.clear();
-    await setToken(token: null);
-    await setUserId(id: null);
-    if (!context.mounted) return;
-    context.go('/');
+    await setToken(token: "");
+    await setUserId(id: "");
+    notifyListeners();
   }
 
 
   Future<void> userLogin(
       String email, String password, BuildContext context,bool isMobile) async {
     authStateProvider.setState(AuthState.loading);
-    final result =
-        await loginUseCase(LoginParams(email: email, password: password));
+    final result = await loginUseCase(LoginParams(email: email, password: password));
     await result.fold((failure) {
       authStateProvider.setState(AuthState.error);
       showSnackBar(context, "Login Failed: ${failure.message}", true);
