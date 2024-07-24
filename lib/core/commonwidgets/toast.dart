@@ -10,6 +10,7 @@ void showSnackBar(BuildContext context,String message,[bool errorMessage = false
     behavior: SnackBarBehavior.floating,
     margin: const EdgeInsets.all(50),
     elevation: 30,
+    duration:const Duration(milliseconds: 4000) ,
   );
   ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }

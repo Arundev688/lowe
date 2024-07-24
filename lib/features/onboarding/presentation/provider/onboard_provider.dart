@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/error/exceptions.dart';
@@ -33,7 +32,15 @@ class OnboardProvider extends ChangeNotifier {
 
   bool _isAssociation = false;
 
+  bool _isOnboardLoading = false;
+
+  bool _isAssociationLoading = false;
+
   bool get isAssociation => _isAssociation;
+
+  bool get isOnboarding => _isOnboardLoading;
+
+  bool get isAssociationLoading => _isAssociationLoading;
 
   DomainOnboard? _onboard;
 
@@ -41,26 +48,28 @@ class OnboardProvider extends ChangeNotifier {
 
   Future<void> onboard(
       String type, String data, BuildContext context,String userId,String title,int count) async {
-    authStateProvider.setState(AuthState.loading);
+    _isOnboardLoading = true;
     notifyListeners();
 
-    final result =
-        await onboardUseCase(OnboardParams(type:type ,data:data ,createdBy:userId.toString()));
+    final result = await onboardUseCase(OnboardParams(type:type ,data:data ,createdBy:userId.toString()));
      result.fold((failure) {
-      authStateProvider.setState(AuthState.error);
+       _isOnboardLoading = false;
+       Navigator.pop(context);
       showSnackBar(context, "Onboard Failed: ${failure.message}", true);
       notifyListeners();
     }, (success) {
        if(title == Constants.scanOnboard){
-         authStateProvider.setState(AuthState.success);
+         _isOnboardLoading = false;
          _onboard = success;
          _isAssociation = false;
-         context.go("/dashboardMobile");
+         Navigator.pop(context);
          showSnackBar(context, "Onboard Success");
          setScanResult("");
+         clearScan();
          notifyListeners();
        } else {
-         authStateProvider.setState(AuthState.success);
+         _isOnboardLoading = false;
+         _isAssociation = false;
          setScanResult("");
          if(success.isAssociated == true){
            if(success.isSensor == true){
@@ -68,11 +77,11 @@ class OnboardProvider extends ChangeNotifier {
            } else{
              showSnackBar(context, "Package is Already Associated try with new one",true);
            }
-           context.go("/dashboardMobile");
+           Navigator.pop(context);
+           clearScan();
            notifyListeners();
          } else {
            if (count < 2) {
-             _isAssociation = false;
              scanBarcode(context);
              notifyListeners();
            } else {
@@ -96,7 +105,7 @@ class OnboardProvider extends ChangeNotifier {
       String sensorData,
       String sensorType,
       String createdBy,BuildContext context) async{
-    authStateProvider.setState(AuthState.loading);
+    _isAssociationLoading = true;
     notifyListeners();
 
     try{
@@ -104,15 +113,15 @@ class OnboardProvider extends ChangeNotifier {
       await associationUseCase(AssociationParams(
           packageData, packageType, sensorData, sensorType, createdBy));
       result.fold((failure) {
-        authStateProvider.setState(AuthState.error);
+        _isAssociationLoading = false;
+        Navigator.pop(context);
         showSnackBar(context, "Association Failed: ${failure.message}", true);
         clearScan();
-        context.go("/dashboardMobile");
         notifyListeners();
       },(success){
-        authStateProvider.setState(AuthState.success);
+        _isAssociationLoading = false;
         clearScan();
-        context.go("/dashboardMobile");
+        Navigator.pop(context);
         showSnackBar(context, "Association Success");
         notifyListeners();
       });
@@ -135,8 +144,10 @@ class OnboardProvider extends ChangeNotifier {
           builder: (context) => const SimpleBarcodeScannerPage(),
         ),
       );
-      if (result != null) {
+      if (result != null && result.toString() != "-1" ) {
         setScanResult(result);
+      } else {
+        setScanResult("");
       }
       return result;
     }catch(e){
@@ -147,9 +158,9 @@ class OnboardProvider extends ChangeNotifier {
 
 
   void clearScan(){
-    _scanResult = "";
     _sensorDate = "";
     _packageData= "";
+    _isAssociation = false;
     notifyListeners();
   }
 

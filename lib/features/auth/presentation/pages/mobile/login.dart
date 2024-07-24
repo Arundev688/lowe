@@ -7,7 +7,6 @@ import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
-import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:provider/provider.dart';
 
 class MobileLogin extends StatefulWidget {
@@ -24,7 +23,6 @@ class _MobileLoginState extends State<MobileLogin> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = Provider.of<AuthStateProvider>(context);
     return Consumer<AuthProvider>(builder: (ctx, provider, child) {
     return Scaffold(
       body: Padding(
@@ -86,17 +84,17 @@ class _MobileLoginState extends State<MobileLogin> {
             SizedBox(
                 height: ScreenDimensions.screenHeight(context) *
                     0.03),
-            authState.state == AuthState.loading ?
+            provider.loginLoading ?
             const Center(child: CircularProgressIndicator()) :
             CustomButton(
               text: Constants.login,
               onPressed: () async {
                 final errorMessage = provider.validateLoginFields(_emailController.text, _passwordController.text);
                 if (errorMessage != null) {
-                  showSnackBar(context, errorMessage, true); // Display error message
-                  return; // Prevent login call if validation fails
+                  showSnackBar(context, errorMessage, true);
+                  return;
                 } else {
-                  provider.userLogin(_emailController.text, _passwordController.text, context,true);
+                  provider.userLogin(_emailController.text.toString(), _passwordController.text.toString(), context,true);
                 }
               },
             ),

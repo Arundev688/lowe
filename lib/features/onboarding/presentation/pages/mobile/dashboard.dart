@@ -36,7 +36,7 @@ class _DashboardMobileState extends State<DashboardMobile> {
             actions: [
               IconButton(
                   onPressed: ()async {
-                    await authProvider.deleteData();
+                    await authProvider.deleteData(context);
                     if (!context.mounted) return;
                     context.go('/loginMobile');
                   },

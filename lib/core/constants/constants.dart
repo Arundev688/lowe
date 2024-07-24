@@ -29,8 +29,8 @@ class Constants {
   ];
 
   //dashboard mobile
-  static const scanOnboard = 'Onboard';
-  static const scanAssociate = 'Onboard & Associate';
-  static const dashboardInfo = 'Hi ! What you looking for ? ';
+  static const scanOnboard = 'Scan And Onboard';
+  static const scanAssociate = 'Scan And Associate';
+  static const dashboardInfo = 'Hi! What are you looking for? ';
 
 }

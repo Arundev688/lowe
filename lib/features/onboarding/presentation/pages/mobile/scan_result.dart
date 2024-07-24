@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/button.dart';
+import 'package:lowes/core/commonwidgets/toast.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
-import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -39,7 +38,6 @@ class _ScanResultState extends State<ScanResult> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = Provider.of<AuthStateProvider>(context);
     return Consumer<OnboardProvider>(builder: (ctx, provider, child) {
       return Scaffold(
         body: Center(
@@ -69,8 +67,8 @@ class _ScanResultState extends State<ScanResult> {
                       )
                     : const SizedBox(),
                 provider.isAssociation
-                    ? association(provider, authState,context)
-                    : onboard(provider, authState,context)
+                    ? association(provider, context)
+                    : onboard(provider, context)
               ],
             ),
           ),
@@ -79,14 +77,14 @@ class _ScanResultState extends State<ScanResult> {
     });
   }
 
-  Widget onboard(OnboardProvider provider, AuthStateProvider authState,BuildContext context) {
+  Widget onboard(OnboardProvider provider, BuildContext context) {
     return Column(
       children: [
         Text(widget.title.toString(), style: AppTextStyle.title),
         SizedBox(height: ScreenDimensions.screenHeight(context) * 0.06),
         Text(provider.scanResult, style: AppTextStyle.subTitle),
         SizedBox(height: ScreenDimensions.screenHeight(context) * 0.06),
-        authState.state == AuthState.loading
+        provider.isAssociationLoading
             ? const Center(child: CircularProgressIndicator())
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12.0),
@@ -100,7 +98,7 @@ class _ScanResultState extends State<ScanResult> {
                         buttonColor: white,
                         textStyle: AppTextStyle.textPrime,
                         onPressed: () {
-                          context.go("/dashboardMobile");
+                          Navigator.pop(context);
                           provider.clearScan();
                         },
                       ),
@@ -112,18 +110,39 @@ class _ScanResultState extends State<ScanResult> {
                       child: CustomButton(
                         text: "Yes, Confirm",
                         borderRadius: 12.0,
-                        buttonColor: textColor,
-                        onPressed: () async {
-                          final prefs = await SharedPreferences.getInstance();
-                          var userId = prefs.getString('userId');
-                          if (!context.mounted) return;
-                          if(provider.sensorData.toString().isNotEmpty || provider.packageData.toString().isNotEmpty){
-                            provider.onboard("barcode", provider.scanResult, context, userId.toString(), widget.title.toString(),2);
-                          } else {
-                            provider.onboard("barcode", provider.scanResult, context, userId.toString(), widget.title.toString(),1);
-                          }
-
-                        },
+                        buttonColor:
+                            provider.scanResult.isEmpty ? lightText : textColor,
+                        onPressed: provider.scanResult.isEmpty
+                            ? () {
+                                showSnackBar(context,
+                                    "Invalid Scan Result Try Again", true);
+                              }
+                            : () async {
+                                final prefs =
+                                    await SharedPreferences.getInstance();
+                                var userId = prefs.getString('userId');
+                                if (!context.mounted) return;
+                                if (provider.sensorData.toString().isNotEmpty ||
+                                    provider.packageData
+                                        .toString()
+                                        .isNotEmpty) {
+                                  provider.onboard(
+                                      "barcode",
+                                      provider.scanResult,
+                                      context,
+                                      userId.toString(),
+                                      widget.title.toString(),
+                                      2);
+                                } else {
+                                  provider.onboard(
+                                      "barcode",
+                                      provider.scanResult,
+                                      context,
+                                      userId.toString(),
+                                      widget.title.toString(),
+                                      1);
+                                }
+                              },
                       ),
                     ),
                   ],
@@ -133,14 +152,12 @@ class _ScanResultState extends State<ScanResult> {
     );
   }
 
-  Widget association(OnboardProvider provider, AuthStateProvider authState,BuildContext context) {
+  Widget association(OnboardProvider provider, BuildContext context) {
     return Column(
       children: [
         Text("Sure you want to associate?", style: AppTextStyle.title),
         SizedBox(height: ScreenDimensions.screenHeight(context) * 0.06),
-        Text(widget.scanResult.toString(), style: AppTextStyle.subTitle),
-        SizedBox(height: ScreenDimensions.screenHeight(context) * 0.06),
-        authState.state == AuthState.loading
+        provider.isOnboarding
             ? const Center(child: CircularProgressIndicator())
             : Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 6.0),
@@ -153,8 +170,8 @@ class _ScanResultState extends State<ScanResult> {
                         borderRadius: 12.0,
                         buttonColor: white,
                         textStyle: AppTextStyle.textPrime,
-                        onPressed: (){
-                          context.go("/dashboardMobile");
+                        onPressed: () {
+                          Navigator.pop(context);
                           provider.clearScan();
                         },
                       ),

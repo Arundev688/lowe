@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DioUtil {
@@ -24,8 +25,13 @@ class DioUtil {
       }, onError: (DioException e, handler) async {
         if (e.response != null) {
           if (e.response!.statusCode == 401) {
+            if(kDebugMode){
+              print("${e.response!.statusCode} ${e.response?.data}");
+            }
           } else if (e.response!.statusCode == 403) {
+            print("${e.response!.statusCode} ${e.response?.data}");
           } else if (e.response!.statusCode == 500) {
+            print("${e.response!.statusCode} ${e.response?.data}");
             handler.resolve(e.response!);
           } else {
             handler.resolve(e.response!);

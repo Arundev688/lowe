@@ -41,17 +41,18 @@ class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
         },
         "createdBy": createdBy,
       });
-      if(kDebugMode){
-        print("onboard data :: +${response.data.toString()}");
-      }
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final responseDecode = jsonDecode(response.toString());
         return OnboardResponse.fromJson(responseDecode as Map<String, dynamic>);
+      } else if(response.statusCode == 400) {
+        throw const ServerExceptions("Incorrect Scan Found!");
+      } else if (response.statusCode == 401){
+        throw const ServerExceptions("Please authenticate");
       } else {
-        return OnboardResponse();
+        throw const ServerExceptions("An Unexpected Error Occurred");
       }
     } catch (e) {
-      throw ServerExceptions(e.toString());
+      throw const ServerExceptions("Incorrect Scan Found!");
     }
   }
 
@@ -87,7 +88,7 @@ class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
         print("Associate  header  is  :: ${response.headers}");
         print("Associate  base url  is  :: $baseurl");
       }*/
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         return unit;
       } else if (response.statusCode == 401){
         throw const ServerExceptions("Please authenticate");
@@ -95,10 +96,10 @@ class OnboardRemoteDateSourceImpl implements OnboardRemoteDateSource {
         final errorMessage = response.data['message'] ?? 'Bad Request';
         throw ServerExceptions(errorMessage);
       } else {
-        throw const ServerExceptions("An Unexpected Error Occurred dev");
+        throw const ServerExceptions("An Unexpected Error Occurred");
       }
     } catch (e) {
-      throw ServerExceptions(e.toString());
+      throw const ServerExceptions("An Unexpected Error Occurred");
     }
   }
 

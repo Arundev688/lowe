@@ -67,7 +67,7 @@ class TextFieldContainer extends StatelessWidget {
           errorText: errorText,
           isDense: isDense,
           contentPadding:EdgeInsets.symmetric(
-            horizontal: 0.0,
+            horizontal: ScreenDimensions.screenWidth(context)*0.02,
               vertical: ScreenDimensions.screenHeight(context) * 0.01),
           floatingLabelBehavior: FloatingLabelBehavior.always,
           enabledBorder: const OutlineInputBorder(
@@ -108,12 +108,12 @@ class TextFieldContainer extends StatelessWidget {
             child: suffixWidget,
           )
               : const SizedBox(),
-          prefixIcon:prefixWidget != null
+/*          prefixIcon:prefixWidget != null
               ? GestureDetector(
             onTap: onPrefixTap,
             child: prefixWidget,
           )
-              : const SizedBox(),
+              : const SizedBox(),*/
           hintStyle: AppTextStyle.textField,
         ),
       ),

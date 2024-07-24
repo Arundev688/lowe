@@ -3,7 +3,7 @@ import 'package:lowes/core/responsive/responsive.dart';
 import 'package:lowes/features/auth/presentation/pages/mobile/login.dart';
 import 'package:lowes/features/auth/presentation/pages/web/login.dart';
 import 'package:lowes/features/onboarding/presentation/pages/mobile/dashboard.dart';
-import 'package:lowes/features/onboarding/presentation/pages/web/dashboard.dart';
+import 'package:lowes/features/onboarding/presentation/pages/web/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Future<bool> checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey("token").toString().isNotEmpty;
+    return prefs.containsKey("token");
   }
 
   @override
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
           final isLoggedIn = snapshot.data!;
           return ResponsiveLayout(
             mobileBody: isLoggedIn ? const DashboardMobile() : const MobileLogin(),
-            desktopBody: isLoggedIn ? const DashboardWeb() : const WebLogin(),
+            desktopBody: isLoggedIn ? const HomeWeb() : const WebLogin(),
           );
         } else {
           return const Center(child: CircularProgressIndicator()); // Show loading indicator while checking
