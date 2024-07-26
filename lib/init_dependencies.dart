@@ -20,6 +20,21 @@ Future<void> initDepedencies() async {
   _initAuth();
   _initAuthState();
   _initOnboardProvider();
+
+/*  serviceLocator.registerLazySingleton(() =>
+      AuthProvider(
+          loginUseCase: serviceLocator(),
+          authStateProvider: serviceLocator(),
+          onboardProvider: serviceLocator()));
+
+  serviceLocator.registerLazySingleton(() =>
+      OnboardProvider(
+          onboardUseCase: serviceLocator(),
+          authStateProvider: serviceLocator(),
+          associationUseCase: serviceLocator(),
+          authProvider: serviceLocator())
+  );*/
+
   final val = ApiRoutes.baseUrl = baseUrl;
   serviceLocator.registerLazySingleton(() => val);
 }
@@ -28,44 +43,50 @@ void _initAuth() {
   // Datasource
   serviceLocator
     ..registerFactory<AuthRemoteDataSource>(
-      () => AuthRemoteDataSourceImpl(),
+          () => AuthRemoteDataSourceImpl(),
     )
-    // Repository
+  // Repository
     ..registerFactory<AuthRepository>(
-      () => AuthRepositryImpl(
-        serviceLocator(),
-      ),
+          () =>
+          AuthRepositryImpl(
+            serviceLocator(),
+          ),
     )
-    // Usecases
+  // Usecases
     ..registerFactory(() => UserLoginUseCase(serviceLocator()))
-    //provider
-    ..registerLazySingleton(() => AuthProvider(
-        loginUseCase: serviceLocator(), authStateProvider: serviceLocator()));
-}
+  //provider
+    ..registerLazySingleton(() =>
+      AuthProvider(
+          loginUseCase: serviceLocator(),
+          authStateProvider: serviceLocator()));
+  }
 
 void _initAuthState() {
   serviceLocator.registerLazySingleton(() => AuthStateProvider());
 }
 
 void _initOnboardProvider() {
-  // Datasource
+// Datasource
   serviceLocator
     ..registerFactory<OnboardRemoteDateSource>(
-      () => OnboardRemoteDateSourceImpl(),
+          () => OnboardRemoteDateSourceImpl(),
     )
-    // Repository
+// Repository
     ..registerFactory<OnboardRepository>(
-      () => OnboardRepositryImpl(
-        serviceLocator(),
-      ),
+          () =>
+          OnboardRepositryImpl(
+            serviceLocator(),
+          ),
     )
-    // Usecases
-    ..registerFactory(() => OnboardUseCase(serviceLocator()))
-    ..registerFactory(() => AssociationUseCase(serviceLocator()))
+// Usecases
+    ..registerFactory(() =>
+        OnboardUseCase(serviceLocator()))..registerFactory(() =>
+      AssociationUseCase(serviceLocator()))
 
-  //provider
-    ..registerLazySingleton(() => OnboardProvider(
-        onboardUseCase: serviceLocator(),
-        authStateProvider: serviceLocator(),
-        associationUseCase: serviceLocator()));
+//provider
+    ..registerLazySingleton(() =>
+        OnboardProvider(
+            onboardUseCase: serviceLocator(),
+            authStateProvider: serviceLocator(),
+            associationUseCase: serviceLocator()));
 }

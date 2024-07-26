@@ -57,6 +57,7 @@ class _ForgetPasswordWebState extends State<ForgetPasswordWeb> {
                         height: ScreenDimensions.screenHeight(context) * 0.012),
                     TextFieldContainer(
                       maxLines: 1,
+                      height: ScreenDimensions.screenHeight(context) * 0.1,
                       textEditingController: _emailController,
                       action: TextInputAction.next,
                       textInputType: TextInputType.emailAddress,

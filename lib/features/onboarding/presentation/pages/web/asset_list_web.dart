@@ -4,6 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:lowes/core/commonwidgets/textfield.dart';
+import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 
 class AssetListWeb extends StatefulWidget {
@@ -49,6 +50,7 @@ class _AssetListWebState extends State<AssetListWeb> {
             flex: 8,
             child: TextFieldContainer(
               textEditingController: searchController,
+              height: ScreenDimensions.screenHeight(context) * 0.08,
               hint: "Search by Agent name",
               textInputType: TextInputType.emailAddress,
               /*onChanged: (value) {

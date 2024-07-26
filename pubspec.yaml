@@ -48,6 +48,7 @@ dependencies:
   get_it: ^7.7.0
   flutter_svg: ^2.0.10+1
   simple_barcode_scanner: ^0.1.1
+  flutter_native_splash: ^2.4.1
 
 
 dev_dependencies:
@@ -74,6 +75,18 @@ flutter:
 
   assets:
     - assets/svg/scanner.svg
+    - assets/png/hutrac_logo.png
+    - assets/png/hutrac_logo_12.png
+    - assets/png/web_login.png
+    - assets/png/dashboard.png
+    - assets/png/dashboard_unselect.png
+    - assets/png/list.png
+    - assets/png/list_unselect.png
+    - assets/png/scanner.png
+    - assets/png/scanner_unselect.png
+    - assets/png/settings.png
+    - assets/png/settings_unselect.png
+    - assets/svg/signout.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

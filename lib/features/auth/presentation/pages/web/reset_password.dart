@@ -55,6 +55,7 @@ class _ResetPasswordWebState extends State<ResetPasswordWeb> {
                         height: ScreenDimensions.screenHeight(context) * 0.012),
                     TextFieldContainer(
                       maxLines: 1,
+                      height: ScreenDimensions.screenHeight(context) * 0.1,
                       action: TextInputAction.done,
                       isObsecure: obSecurePassword,
                       onSuffixTap: () {
@@ -79,6 +80,7 @@ class _ResetPasswordWebState extends State<ResetPasswordWeb> {
                         height: ScreenDimensions.screenHeight(context) * 0.012),
                     TextFieldContainer(
                       maxLines: 1,
+                      height: ScreenDimensions.screenHeight(context) * 0.1,
                       action: TextInputAction.done,
                       isObsecure: obSecureConfirmPassword,
                       onSuffixTap: () {

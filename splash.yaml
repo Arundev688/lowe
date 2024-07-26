@@ -1,0 +1,20 @@
+flutter_native_splash:
+  color:  '#A3ABB8'
+  image: assets/png/hutrac_logo.png
+  image_dark : assets/png/hutrac_logo.png
+  android: true
+  ios: true
+  fullscreen: true
+  android_gravity: center
+  ios_content_mode: center
+
+  android_12:
+    color: '#ffffff'
+    color_dark: "#696F79"
+    image: assets/png/hutrac_logo_12.png
+    image_dark: assets/png/hutrac_logo_12.png
+    fullscreen: true
+    android_gravity: center
+    ios_content_mode: center
+
+    web: false

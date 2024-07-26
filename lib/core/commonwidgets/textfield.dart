@@ -23,6 +23,8 @@ class TextFieldContainer extends StatelessWidget {
         this.isDense = false,
         this.focusNode,
         this.maxLines=1,
+        required this.height,
+        this.onChanged,
         super.key});
 
   final TextEditingController textEditingController;
@@ -43,11 +45,13 @@ class TextFieldContainer extends StatelessWidget {
   final int? maxLines;
   final FocusNode? focusNode;
   final TextInputAction? action;
+  final double? height;
+  final ValueChanged<String>? onChanged;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: ScreenDimensions.screenHeight(context) * 0.08,
+      height: height,
       width: double.infinity,
       child: TextFormField(
         enabled: enabled,
@@ -58,6 +62,7 @@ class TextFieldContainer extends StatelessWidget {
         controller: textEditingController,
         focusNode: focusNode,
         textAlign: TextAlign.start,
+        onChanged: onChanged,
         keyboardType: textInputType,
         style: AppTextStyle.textField,
         textAlignVertical: TextAlignVertical.center,
@@ -67,40 +72,23 @@ class TextFieldContainer extends StatelessWidget {
           errorText: errorText,
           isDense: isDense,
           contentPadding:EdgeInsets.symmetric(
-            horizontal: ScreenDimensions.screenWidth(context)*0.02,
-              vertical: ScreenDimensions.screenHeight(context) * 0.01),
-          floatingLabelBehavior: FloatingLabelBehavior.always,
-          enabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                  width: 1.2, color: lightText),
-              borderRadius: BorderRadius.all(
-                Radius.circular(4),
-              )),
-          disabledBorder: const OutlineInputBorder(
-              borderSide: BorderSide(
-                  width: 1.2 , color: lightText),
-              borderRadius: BorderRadius.all(
-                Radius.circular(4),
-              )),
-          hintText: hint,
+            vertical: ScreenDimensions.screenHeight(context)*0.01,
+            horizontal: ScreenDimensions.screenWidth(context)*0.01),
+          floatingLabelBehavior: FloatingLabelBehavior.auto,
+          disabledBorder: const UnderlineInputBorder(
+              borderSide: BorderSide(color: lightText),
+          ),
+          labelText: hint,
+          labelStyle: AppTextStyle.textHint,
           errorStyle: AppTextStyle.textField.copyWith(color: error),
-          errorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(width: 1.0, color: error),
-            borderRadius: BorderRadius.all(
-              Radius.circular(4),
-            ),
+          errorBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: error),
           ),
-          focusedBorder: const OutlineInputBorder(
-            borderSide: BorderSide(width: 1.0, color: lightText),
-            borderRadius: BorderRadius.all(
-              Radius.circular(4),
-            ),
+          focusedBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: primary),
           ),
-          focusedErrorBorder: const OutlineInputBorder(
-            borderSide: BorderSide(width: 1.3, color: error),
-            borderRadius: BorderRadius.all(
-              Radius.circular(4),
-            ),
+          focusedErrorBorder: const UnderlineInputBorder(
+            borderSide: BorderSide(color: error),
           ),
           suffixIcon: suffixWidget != null
               ? GestureDetector(

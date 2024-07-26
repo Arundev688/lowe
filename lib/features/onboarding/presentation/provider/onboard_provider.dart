@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/error/exceptions.dart';
+import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:lowes/features/onboarding/domain/entities/domain_onboard.dart';
 import 'package:lowes/features/onboarding/domain/usecase/association_usecase.dart';
@@ -45,6 +46,16 @@ class OnboardProvider extends ChangeNotifier {
   DomainOnboard? _onboard;
 
   DomainOnboard? get onBoardResult => _onboard;
+
+  int _mobileSelectedIndex = 0;
+
+  int get mobileSelectedIndex => _mobileSelectedIndex;
+
+
+  updateBottomNavIndex(int index) {
+      _mobileSelectedIndex = index;
+      notifyListeners();
+  }
 
   Future<void> onboard(
       String type, String data, BuildContext context,String userId,String title,int count) async {

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
 import 'package:lowes/features/auth/domain/usecase/user_login_usecase.dart';
-import 'package:lowes/features/auth/presentation/pages/mobile/login.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthProvider extends ChangeNotifier {
   final UserLoginUseCase loginUseCase;
   final AuthStateProvider authStateProvider;
+  /*final OnboardProvider onboardProvider;*/
 
 
   AuthProvider({
@@ -22,6 +22,33 @@ class AuthProvider extends ChangeNotifier {
   bool _isLoginLoading = false;
 
   bool get loginLoading => _isLoginLoading;
+
+  final TextEditingController _emailController = TextEditingController();
+
+  TextEditingController get emailController => _emailController;
+
+  final TextEditingController _passwordController = TextEditingController();
+
+  TextEditingController get passwordController => _passwordController;
+
+
+  String _userName = "";
+  String _email = "";
+
+  String get userName => _userName;
+
+  String get email => _email;
+
+  void updateEmail(String email) {
+    _emailController.text = email;
+    notifyListeners();
+  }
+
+  void updatePassword(String password) {
+    _passwordController.text = password;
+    notifyListeners();
+  }
+
 
   Future<void> setToken({String? token}) async {
     final prefs = await SharedPreferences.getInstance();
@@ -36,6 +63,14 @@ class AuthProvider extends ChangeNotifier {
   Future<void> deleteData(BuildContext context) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.clear();
+    _userName = "";
+    _email = "";
+
+    //ToDo
+  //  onboardProvider.updateBottomNavIndex(0);
+
+    if (!context.mounted) return;
+    context.go('/loginMobile');
     notifyListeners();
   }
 
@@ -50,22 +85,34 @@ class AuthProvider extends ChangeNotifier {
         _isLoginLoading = false;
         showSnackBar(context, "Login Failed: ${failure.message}", true);
         notifyListeners();
+        updatePassword("");
+        updateEmail("");
       }, (success) async {
-        showSnackBar(context, "Login Success");
         await setToken(token: success.tokens?.access?.token.toString());
         await setUserId(id: success.user?.id);
+        _userName = success.user!.name.toString();
+        _email = success.user!.email.toString();
         _isLoginLoading = false;
+        updatePassword("");
+        updateEmail("");
         if (!context.mounted) return;
         isMobile ? context.go('/dashboardMobile') : context.go('/dashboardWeb');
         notifyListeners();
       });
     } catch(e){
       _isLoginLoading = false;
+      if (!context.mounted) return;
       showSnackBar(context, "Login exception is : $e");
-      if(kDebugMode){
-        print("Login exception is : $e");
-      }
     }
+  }
+
+
+  bool isValidFields(){
+     if(_emailController.text.toString().isNotEmpty && _passwordController.text.toString().isNotEmpty){
+       return true;
+     } else {
+       return false;
+     }
   }
 
   String? validateLoginFields(String email, String password) {

@@ -35,7 +35,10 @@ class _WebLoginState extends State<WebLogin> {
             Expanded(
                 flex: 2,
                 child: Container(
-                  color: primary,
+                  color: primaryLight,
+                  height: double.infinity,
+                  child:
+                      Image.asset("assets/png/web_login.png", fit: BoxFit.fitWidth),
                 )),
             Expanded(
                 flex: 3,
@@ -46,40 +49,34 @@ class _WebLoginState extends State<WebLogin> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Image.asset("assets/png/hutrac_logo.png",
+                          width: ScreenDimensions.screenWidth(context) * 0.4,
+                          height: ScreenDimensions.screenHeight(context) * 0.1),
+                      SizedBox(
+                          height:
+                              ScreenDimensions.screenHeight(context) * 0.05),
                       Text(Constants.login, style: AppTextStyle.title),
                       SizedBox(
-                          height: ScreenDimensions.screenHeight(context) *
-                              0.008),
-                      const Divider(
-                        thickness: 0.5,
-                        color: lightText,
-                        indent: 5,
-                        endIndent: 5,
-                      ),
-                      SizedBox(
-                          height: ScreenDimensions.screenHeight(context) *
-                              0.03),
-                      Text(Constants.email, style: AppTextStyle.textPrime),
-                      SizedBox(
-                          height: ScreenDimensions.screenHeight(context) *
-                              0.012),
+                          height:
+                              ScreenDimensions.screenHeight(context) * 0.08),
                       TextFieldContainer(
                         maxLines: 1,
+                        height: ScreenDimensions.screenHeight(context) * 0.1,
+                        hint: Constants.email,
                         textEditingController: _emailController,
                         action: TextInputAction.next,
                         textInputType: TextInputType.emailAddress,
+                        suffixWidget: const Icon(Icons.email_outlined),
                       ),
                       SizedBox(
-                          height: ScreenDimensions.screenHeight(context) *
-                              0.03),
-                      Text(Constants.password, style: AppTextStyle.textPrime),
-                      SizedBox(
-                          height: ScreenDimensions.screenHeight(context) *
-                              0.012),
+                          height:
+                              ScreenDimensions.screenHeight(context) * 0.05),
                       TextFieldContainer(
                         maxLines: 1,
+                        height: ScreenDimensions.screenHeight(context) * 0.1,
                         action: TextInputAction.done,
                         isObsecure: obSecurePassword,
+                        hint: Constants.password,
                         onSuffixTap: () {
                           setState(() {
                             obSecurePassword = !obSecurePassword;
@@ -87,8 +84,8 @@ class _WebLoginState extends State<WebLogin> {
                         },
                         suffixWidget: Icon(
                           obSecurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                              ? Icons.lock_outlined
+                              : Icons.lock_open_rounded,
                           color: textColor,
                           size: 25,
                         ),
@@ -96,8 +93,8 @@ class _WebLoginState extends State<WebLogin> {
                         textInputType: TextInputType.visiblePassword,
                       ),
                       SizedBox(
-                          height: ScreenDimensions.screenHeight(context) *
-                              0.03),
+                          height:
+                              ScreenDimensions.screenHeight(context) * 0.05),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -126,33 +123,37 @@ class _WebLoginState extends State<WebLogin> {
                             },
                             child: Text(
                               Constants.forget,
-                              style:
-                              AppTextStyle.textPrime.copyWith(color: primary),
+                              style: AppTextStyle.textPrime
+                                  .copyWith(color: primary),
                             ),
                           ),
                         ],
                       ),
                       SizedBox(
-                          height: ScreenDimensions.screenHeight(context) *
-                              0.03),
-                      authState.state == AuthState.loading ?
-                      const Center(child: CircularProgressIndicator()) :
-                      CustomButton(
-                        text: Constants.login,
-                        onPressed: () async {
-                          final errorMessage = provider.validateLoginFields(_emailController.text, _passwordController.text);
-                          if (errorMessage != null) {
-                            showSnackBar(context, errorMessage, true); // Display error message
-                            return; // Prevent login call if validation fails
-                          } else {
-                            provider.userLogin(_emailController.text, _passwordController.text, context,false);
-                          }
-                        },
-                      ),
+                          height:
+                              ScreenDimensions.screenHeight(context) * 0.05),
+                      authState.state == AuthState.loading
+                          ? const Center(child: CircularProgressIndicator())
+                          : CustomButton(
+                              text: Constants.login,
+                              onPressed: () async {
+                                final errorMessage =
+                                    provider.validateLoginFields(
+                                        _emailController.text,
+                                        _passwordController.text);
+                                if (errorMessage != null) {
+                                  showSnackBar(context, errorMessage,
+                                      true); // Display error message
+                                  return; // Prevent login call if validation fails
+                                } else {
+                                  provider.userLogin(_emailController.text,
+                                      _passwordController.text, context, false);
+                                }
+                              },
+                            ),
                     ],
                   ),
-                )
-            )
+                ))
           ],
         ),
       );

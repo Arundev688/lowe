@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter/services.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
-import 'package:lowes/core/route/constant.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
-import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
-import 'package:lowes/features/onboarding/presentation/pages/mobile/custom_scanner.dart';
-import 'package:lowes/features/onboarding/presentation/pages/mobile/scan_result.dart';
+import 'package:lowes/features/onboarding/presentation/pages/mobile/home.dart';
+import 'package:lowes/features/onboarding/presentation/pages/mobile/settings.dart';
 import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
-import 'package:lowes/features/onboarding/presentation/widgets/elevation_container.dart';
+import 'package:lowes/features/onboarding/presentation/widgets/alert_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:simple_barcode_scanner/enum.dart';
 
 class DashboardMobile extends StatefulWidget {
   const DashboardMobile({super.key});
@@ -22,96 +18,116 @@ class DashboardMobile extends StatefulWidget {
 }
 
 class _DashboardMobileState extends State<DashboardMobile> {
+  final tabs = [
+    const Center(child: Text("Dashboard")),
+    const OnboardMobile(),
+    const Center(child: Text("List")),
+    const SettingsMobile(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
-    return Consumer<OnboardProvider>(
-        builder: (context, onboardProvider, child) {
-      return SafeArea(
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: primary,
-            elevation: 2.0,
-            title: Text(Constants.appTitle, style: AppTextStyle.titleWhite),
-            actions: [
-              IconButton(
-                  onPressed: ()async {
-                    await authProvider.deleteData(context);
-                    if (!context.mounted) return;
-                    context.go('/loginMobile');
+    return SafeArea(
+        child: PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              showAlert(
+                  title: Constants.exitInfo,
+                  image: 'assets/svg/signout.svg',
+                  context: context,
+                  onYes: () {
+                    SystemNavigator.pop();
                   },
-                  icon: const Icon(Icons.logout, color: white))
-            ],
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(Constants.dashboardInfo, style: AppTextStyle.textPrime),
-                SizedBox(height: ScreenDimensions.screenHeight(context) * 0.04),
-                InkWell(
-                    onTap: () async {
-                      final scanResult =
-                          await onboardProvider.scanBarcode(context);
-                      if (scanResult != null) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ScanResult(scanResult:scanResult,title: Constants.scanOnboard),
-                            ),
-                          );
-                        });
-                      }
-                    },
-                    child: containers(Constants.scanOnboard)),
-                SizedBox(height: ScreenDimensions.screenHeight(context) * 0.06),
-                InkWell(
-                    onTap: ()async {
-                      final scanResult =
-                          await onboardProvider.scanBarcode(context);
-                      if (scanResult != null) {
-                        WidgetsBinding.instance.addPostFrameCallback((_) {
-                          /*     context.goNamed(
-                            '/ScanResult',
-                            queryParameters: {'scanResult': scanResult, 'scanTitle': Constants.scanOnboard},
-                          );*/
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ScanResult(scanResult:scanResult,title: Constants.scanAssociate),
-                            ),
-                          );
-                        });
-                      }
-                    },
-                    child: containers(Constants.scanAssociate)),
-                SizedBox(height: ScreenDimensions.screenHeight(context) * 0.06),
-              ],
-            ),
-          ),
-        ),
-      );
-    });
-  }
-
-  Widget containers(String title) {
-    return customContainer(
-      width: double.infinity,
-      height: ScreenDimensions.screenHeight(context) * 0.12,
-      containerColor: white,
-      radius: 12.0,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          SvgPicture.asset("assets/svg/scanner.svg",
-              width: ScreenDimensions.screenWidth(context) * 0.1,
-              height: ScreenDimensions.screenHeight(context) * 0.1),
-          Text(title, style: AppTextStyle.textPrime)
-        ],
-      ),
-    );
+                  onNo: () {
+                    Navigator.pop(context);
+                  });
+            },
+            child: Consumer<OnboardProvider>(builder: (i, provider, p) {
+              return Scaffold(
+                backgroundColor: white,
+                appBar: AppBar(
+                  backgroundColor: primary,
+                  elevation: 2.0,
+                  title:
+                      Text(Constants.appTitle, style: AppTextStyle.titleWhite),
+                ),
+                body: tabs[provider.mobileSelectedIndex],
+                bottomNavigationBar: BottomNavigationBar(
+                  currentIndex: provider.mobileSelectedIndex,
+                  type: BottomNavigationBarType.shifting,
+                  selectedItemColor: primary,
+                  elevation: 8.0,
+                  showSelectedLabels: true,
+                  showUnselectedLabels: false,
+                  backgroundColor: white,
+                  selectedLabelStyle: AppTextStyle.textField.copyWith(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: textColor,
+                  ),
+                  items: [
+                    BottomNavigationBarItem(
+                        activeIcon: Image.asset(
+                          'assets/png/dashboard.png',
+                          fit: BoxFit.contain,
+                          width: ScreenDimensions.screenWidth(context) * 0.1,
+                          height: ScreenDimensions.screenHeight(context) * 0.05,
+                        ),
+                        icon: Image.asset(
+                          'assets/png/dashboard_unselect.png',
+                          fit: BoxFit.contain,
+                          width: ScreenDimensions.screenWidth(context) * 0.09,
+                          height: ScreenDimensions.screenHeight(context) * 0.05,
+                        ),
+                        label: Constants.mobileDashboardMenu[0]),
+                    BottomNavigationBarItem(
+                        activeIcon: Image.asset(
+                          'assets/png/scanner.png',
+                          fit: BoxFit.contain,
+                          width: ScreenDimensions.screenWidth(context) * 0.1,
+                          height: ScreenDimensions.screenHeight(context) * 0.05,
+                        ),
+                        icon: Image.asset(
+                          'assets/png/scanner_unselect.png',
+                          fit: BoxFit.contain,
+                          width: ScreenDimensions.screenWidth(context) * 0.09,
+                          height: ScreenDimensions.screenHeight(context) * 0.05,
+                        ),
+                        label: Constants.mobileDashboardMenu[1]),
+                    BottomNavigationBarItem(
+                        activeIcon: Image.asset(
+                          'assets/png/list.png',
+                          fit: BoxFit.contain,
+                          width: ScreenDimensions.screenWidth(context) * 0.1,
+                          height: ScreenDimensions.screenHeight(context) * 0.05,
+                        ),
+                        icon: Image.asset(
+                          'assets/png/list_unselect.png',
+                          fit: BoxFit.contain,
+                          width: ScreenDimensions.screenWidth(context) * 0.09,
+                          height: ScreenDimensions.screenHeight(context) * 0.05,
+                        ),
+                        label: Constants.mobileDashboardMenu[2]),
+                    BottomNavigationBarItem(
+                        activeIcon: Image.asset(
+                          'assets/png/settings.png',
+                          fit: BoxFit.contain,
+                          width: ScreenDimensions.screenWidth(context) * 0.1,
+                          height: ScreenDimensions.screenHeight(context) * 0.05,
+                        ),
+                        icon: Image.asset(
+                          'assets/png/settings_unselect.png',
+                          fit: BoxFit.contain,
+                          width: ScreenDimensions.screenWidth(context) * 0.09,
+                          height: ScreenDimensions.screenHeight(context) * 0.05,
+                        ),
+                        label: Constants.mobileDashboardMenu[3]),
+                  ],
+                  onTap: (index) {
+                    provider.updateBottomNavIndex(index);
+                  },
+                ),
+              );
+            })));
   }
 }

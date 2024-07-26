@@ -17,104 +17,108 @@ class MobileLogin extends StatefulWidget {
 }
 
 class _MobileLoginState extends State<MobileLogin> {
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
   var obSecurePassword = true;
 
   @override
   Widget build(BuildContext context) {
     return Consumer<AuthProvider>(builder: (ctx, provider, child) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: ScreenDimensions.screenWidth(context) * 0.02),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(Constants.login, style: AppTextStyle.title),
-            SizedBox(
-                height: ScreenDimensions.screenHeight(context) *
-                    0.008),
-            const Divider(
-              thickness: 0.5,
-              color: lightText,
-              indent: 5,
-              endIndent: 5,
-            ),
-            SizedBox(
-                height: ScreenDimensions.screenHeight(context) *
-                    0.03),
-            Text(Constants.email, style: AppTextStyle.textPrime),
-            SizedBox(
-                height: ScreenDimensions.screenHeight(context) *
-                    0.012),
-            TextFieldContainer(
-              maxLines: 1,
-              textEditingController: _emailController,
-              action: TextInputAction.next,
-              textInputType: TextInputType.emailAddress,
-            ),
-            SizedBox(
-                height: ScreenDimensions.screenHeight(context) *
-                    0.03),
-            Text(Constants.password, style: AppTextStyle.textPrime),
-            SizedBox(
-                height: ScreenDimensions.screenHeight(context) *
-                    0.012),
-            TextFieldContainer(
-              maxLines: 1,
-              action: TextInputAction.done,
-              isObsecure: obSecurePassword,
-              onSuffixTap: () {
-                setState(() {
-                  obSecurePassword = !obSecurePassword;
-                });
-              },
-              suffixWidget: Icon(
-                obSecurePassword
-                    ? Icons.visibility_off
-                    : Icons.visibility,
-                color: textColor,
-                size: 25,
+    return GestureDetector(
+      onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
+      child: Scaffold(
+        backgroundColor: lightGray,
+        body: Padding(
+          padding: EdgeInsets.symmetric(
+              horizontal: ScreenDimensions.screenWidth(context) * 0.08),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.asset("assets/png/hutrac_logo.png",width:ScreenDimensions.screenWidth(context) * 0.4,height: ScreenDimensions.screenHeight(context) * 0.1),
+              SizedBox(
+                  height: ScreenDimensions.screenHeight(context) *
+                      0.06),
+              Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(Constants.login, style: AppTextStyle.title1)),
+              SizedBox(
+                  height: ScreenDimensions.screenHeight(context) *
+                      0.06),
+              TextFieldContainer(
+                maxLines: 1,
+                height: ScreenDimensions.screenHeight(context) * 0.08,
+                textEditingController: provider.emailController,
+                action: TextInputAction.next,
+                onChanged: (value) => provider.updateEmail(value),
+                hint: Constants.email,
+                textInputType: TextInputType.emailAddress,
+                suffixWidget: const Icon(Icons.email_outlined),
               ),
-              textEditingController: _passwordController,
-              textInputType: TextInputType.visiblePassword,
-            ),
-            SizedBox(
-                height: ScreenDimensions.screenHeight(context) *
-                    0.03),
-            provider.loginLoading ?
-            const Center(child: CircularProgressIndicator()) :
-            CustomButton(
-              text: Constants.login,
-              onPressed: () async {
-                final errorMessage = provider.validateLoginFields(_emailController.text, _passwordController.text);
-                if (errorMessage != null) {
-                  showSnackBar(context, errorMessage, true);
-                  return;
-                } else {
-                  provider.userLogin(_emailController.text.toString(), _passwordController.text.toString(), context,true);
-                }
-              },
-            ),
-            SizedBox(
-                height: ScreenDimensions.screenHeight(context) *
-                    0.03),
-            Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                onPressed: () {
-
+              SizedBox(
+                  height: ScreenDimensions.screenHeight(context) *
+                      0.03),
+              TextFieldContainer(
+                maxLines: 1,
+                height: ScreenDimensions.screenHeight(context) * 0.08,
+                action: TextInputAction.done,
+                isObsecure: obSecurePassword,
+                onChanged: (value) => provider.updatePassword(value),
+                hint: Constants.password,
+                onSuffixTap: () {
+                  setState(() {
+                    obSecurePassword = !obSecurePassword;
+                  });
                 },
-                child: Text(
-                  Constants.forget,
-                  style:
-                  AppTextStyle.textPrime.copyWith(color: primary),
+                suffixWidget: Icon(
+                  obSecurePassword
+                      ? Icons.lock_outlined
+                      : Icons.lock_open_rounded,
+                  color: textColor,
+                  size: 25,
+                ),
+                textEditingController: provider.passwordController,
+                textInputType: TextInputType.visiblePassword,
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+      
+                  },
+                  child: Text(
+                    Constants.forget,
+                    style: AppTextStyle.textPrime.copyWith(color: primary,fontSize: 16),
+                  ),
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                  height: ScreenDimensions.screenHeight(context) *
+                      0.03),
+              provider.loginLoading ?
+              const Center(child: CircularProgressIndicator()) :
+              CustomButton(
+                text: Constants.login,
+                buttonColor: provider.isValidFields() ? primary : lightText,
+                height: ScreenDimensions.screenHeight(context) * 0.05,
+                onPressed:  provider.isValidFields() ?  () async {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  final errorMessage = provider.validateLoginFields(provider.emailController.text, provider.passwordController.text);
+                  if (errorMessage != null) {
+                    showSnackBar(context, errorMessage, true);
+                    provider.updatePassword("");
+                    provider.updateEmail("");
+                    return;
+                  } else {
+                   await provider.userLogin(provider.emailController.text.toString(), provider.passwordController.text.toString(), context,true);
+                  }
+                } : () {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                  provider.updatePassword("");
+                  provider.updateEmail("");
+                  showSnackBar(context, "Fields are empty", true);
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -17,7 +17,7 @@ class DomainUser extends Equatable {
   final String? email;
   final String? id;
 
-  DomainUser({
+  const DomainUser({
     required this.role,
     required this.isEmailVerified,
     required this.name,

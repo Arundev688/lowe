@@ -54,7 +54,7 @@ class CustomButton extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                  text.toUpperCase(),
+                  text,
                   style: textStyle ??
                       AppTextStyle.button,
                 ),
