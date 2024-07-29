@@ -29,7 +29,7 @@ class _ScanOptionsState extends State<ScanOptions> {
                       await provider.scanBarcode(context);
                     },
                     child: OnboardOptionsItem(
-                      title: provider.scanOptions[index]['scan_option'] ?? "" ,
+                      title: provider.scanOptions[index]['scan_option'] ?? "",
                       image: provider.scanOptions[index]['image'] ?? "",
                     ),
                   );

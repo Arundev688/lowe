@@ -1,8 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
+import 'package:lowes/features/auth/data/models/login_model.dart';
 import 'package:lowes/features/auth/domain/usecase/user_login_usecase.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -63,6 +66,13 @@ class AuthProvider extends ChangeNotifier {
     await prefs.setString('userId', id!);
   }
 
+  Future<void> setUserData({required String userData}) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('userData', userData);
+  }
+
+
+
   Future<void> deleteData(BuildContext context) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.clear();
@@ -94,6 +104,7 @@ class AuthProvider extends ChangeNotifier {
       }, (success) async {
         await setToken(token: success.tokens?.access?.token.toString());
         await setUserId(id: success.user?.id);
+        await setUserData(userData: jsonEncode(success.user));
         _userName = success.user!.name.toString();
         _email = success.user!.email.toString();
         _role = success.user!.role.toString();

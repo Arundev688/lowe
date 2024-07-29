@@ -22,11 +22,11 @@ class OnboardOptionsItem extends StatelessWidget {
           children: [
             Image.asset(
               image,
-              fit: BoxFit.cover,
+              fit: BoxFit.fitHeight,
               width: ScreenDimensions.screenWidth(context) * 0.35,
-              height: ScreenDimensions.screenHeight(context) * 0.15,
+              height: ScreenDimensions.screenHeight(context) * 0.12,
             ),
-            Text(title, style: AppTextStyle.content)
+            Center(child: Text(title, style: AppTextStyle.content,textAlign: TextAlign.center,))
           ],
         ));
   }

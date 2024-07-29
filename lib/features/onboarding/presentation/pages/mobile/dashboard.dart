@@ -5,6 +5,7 @@ import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
 import 'package:lowes/features/onboarding/presentation/pages/mobile/chart.dart';
+import 'package:lowes/features/onboarding/presentation/pages/mobile/entities_list.dart';
 import 'package:lowes/features/onboarding/presentation/pages/mobile/scan_options.dart';
 import 'package:lowes/features/onboarding/presentation/pages/mobile/settings.dart';
 import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
@@ -22,7 +23,7 @@ class _DashboardMobileState extends State<DashboardMobile> {
   final tabs = [
     const ChartMobile(),
     const ScanOptions(),
-    const Center(child: Text("List")),
+    const EntitiesList(),
     const SettingsMobile(),
   ];
 

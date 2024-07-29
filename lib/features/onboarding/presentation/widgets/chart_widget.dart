@@ -8,7 +8,7 @@ class ChartWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SfCircularChart(
-        legend: const Legend(isVisible: true,position: LegendPosition.bottom),
+        legend: const Legend(isVisible: true,position: LegendPosition.right),
         series: <CircularSeries>[
           // Initialize line series
           PieSeries<ChartData, String>(
@@ -21,7 +21,7 @@ class ChartWidget extends StatelessWidget {
               xValueMapper: (ChartData data, _) => data.x,
               yValueMapper: (ChartData data, _) => data.y,
               // Render the data label
-              dataLabelSettings:DataLabelSettings(isVisible : true)
+              dataLabelSettings:const DataLabelSettings(isVisible : true)
           )
         ]
     );
