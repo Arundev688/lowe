@@ -34,10 +34,13 @@ class AuthProvider extends ChangeNotifier {
 
   String _userName = "";
   String _email = "";
+  String _role = "";
 
   String get userName => _userName;
 
   String get email => _email;
+
+  String get role => _role;
 
   void updateEmail(String email) {
     _emailController.text = email;
@@ -65,6 +68,7 @@ class AuthProvider extends ChangeNotifier {
     await preferences.clear();
     _userName = "";
     _email = "";
+    _role = "";
 
     //ToDo
   //  onboardProvider.updateBottomNavIndex(0);
@@ -92,6 +96,7 @@ class AuthProvider extends ChangeNotifier {
         await setUserId(id: success.user?.id);
         _userName = success.user!.name.toString();
         _email = success.user!.email.toString();
+        _role = success.user!.role.toString();
         _isLoginLoading = false;
         updatePassword("");
         updateEmail("");

@@ -111,6 +111,30 @@ class OnboardProvider extends ChangeNotifier {
     });
   }
 
+
+  List<Map<String,String>> scanOptions = [
+    {
+      'scan_option': Constants.scanningOption[0],
+      'image': 'assets/png/package.png'
+    },
+    {
+      'scan_option': Constants.scanningOption[1],
+      'image': 'assets/png/sensor.png'
+    },
+    {
+      'scan_option': Constants.scanningOption[2],
+      'image': 'assets/png/associate.png'
+    },
+    {
+      'scan_option': Constants.scanningOption[3],
+      'image': 'assets/png/gateway.png'
+    },
+    {
+      'scan_option': Constants.scanningOption[4],
+      'image': 'assets/png/associate.png'
+    },
+  ];
+
   Future<void> association(String packageData,
       String packageType,
       String sensorData,

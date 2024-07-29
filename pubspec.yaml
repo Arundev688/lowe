@@ -87,6 +87,10 @@ flutter:
     - assets/png/settings.png
     - assets/png/settings_unselect.png
     - assets/svg/signout.svg
+    - assets/png/associate.png
+    - assets/png/gateway.png
+    - assets/png/package.png
+    - assets/png/sensor.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

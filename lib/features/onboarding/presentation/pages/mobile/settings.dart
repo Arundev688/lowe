@@ -5,7 +5,7 @@ import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
-import 'package:lowes/features/onboarding/presentation/widgets/alert_dialog.dart';
+import 'package:lowes/features/onboarding/presentation/widgets/custom_alert.dart';
 import 'package:provider/provider.dart';
 
 class SettingsMobile extends StatefulWidget {
@@ -51,7 +51,7 @@ class _SettingsMobileState extends State<SettingsMobile> {
           SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
           const Divider(
             thickness: 1.5,
-            color: secondaryGray,
+            color: primaryLight,
           ),
           SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
           Padding(
@@ -77,9 +77,34 @@ class _SettingsMobileState extends State<SettingsMobile> {
           SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
           const Divider(
             thickness: 1.5,
-            color: secondaryGray,
+            color: primaryLight,
           ),
           SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                vertical: ScreenDimensions.screenHeight(context) * 0.01,
+                horizontal: ScreenDimensions.screenWidth(context) * 0.03),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: Text(Constants.role, style: AppTextStyle.content),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: Text(
+                      context.read<AuthProvider>().role,
+                      textAlign: TextAlign.end,
+                      style: AppTextStyle.contentBold,
+                    )),
+              ],
+            ),
+          ),
+          SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
+          const Divider(
+            thickness: 1.5,
+            color: primaryLight,
+          ),
         ],
       ),
       bottomSheet: Container(
@@ -95,8 +120,8 @@ class _SettingsMobileState extends State<SettingsMobile> {
             textStyle: AppTextStyle.textError,
             borderRadius: 15,
             height: ScreenDimensions.screenHeight(context) * 0.05,
-            onPressed: () {
-              showAlert(
+            onPressed: () async{
+              await showAlert(
                   title: Constants.logoutInfo,
                   image: 'assets/svg/signout.svg',
                   context: context,

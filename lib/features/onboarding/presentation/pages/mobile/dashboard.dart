@@ -4,10 +4,11 @@ import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
-import 'package:lowes/features/onboarding/presentation/pages/mobile/home.dart';
+import 'package:lowes/features/onboarding/presentation/pages/mobile/chart.dart';
+import 'package:lowes/features/onboarding/presentation/pages/mobile/scan_options.dart';
 import 'package:lowes/features/onboarding/presentation/pages/mobile/settings.dart';
 import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
-import 'package:lowes/features/onboarding/presentation/widgets/alert_dialog.dart';
+import 'package:lowes/features/onboarding/presentation/widgets/custom_alert.dart';
 import 'package:provider/provider.dart';
 
 class DashboardMobile extends StatefulWidget {
@@ -19,8 +20,8 @@ class DashboardMobile extends StatefulWidget {
 
 class _DashboardMobileState extends State<DashboardMobile> {
   final tabs = [
-    const Center(child: Text("Dashboard")),
-    const OnboardMobile(),
+    const ChartMobile(),
+    const ScanOptions(),
     const Center(child: Text("List")),
     const SettingsMobile(),
   ];
@@ -30,8 +31,8 @@ class _DashboardMobileState extends State<DashboardMobile> {
     return SafeArea(
         child: PopScope(
             canPop: false,
-            onPopInvoked: (didPop) {
-              showAlert(
+            onPopInvokedWithResult: (didPop, result) async {
+             await showAlert(
                   title: Constants.exitInfo,
                   image: 'assets/svg/signout.svg',
                   context: context,

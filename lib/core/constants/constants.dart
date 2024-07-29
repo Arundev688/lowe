@@ -47,6 +47,16 @@ class Constants {
   static const logout = "Logout";
   static const name= "Name";
   static const logoutInfo = "Are you sure want to logout?";
+  static const role = "Role";
+
+  //scanning options screen
+  static const List<String> scanningOption = [
+   "Onboard Package",
+   "Onboard Sensor",
+   "Onboard & Associate",
+   "Onboard Gateway",
+   "Disassociate"
+ ];
 
 
 }
