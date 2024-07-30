@@ -15,60 +15,61 @@ class ChartMobile extends StatefulWidget {
 class _ChartMobileState extends State<ChartMobile> {
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        padding:  const EdgeInsets.symmetric(horizontal: 12),
-        child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(height:  ScreenDimensions.screenHeight(context) * 0.01),
-              customContainer(
-                radius: 12.0,
-                containerColor: lightGray,
-                child: Column(
-                  children: [
-                    Text("Total Devices",style: AppTextStyle.title),
-                    const SizedBox(
-                      height: 220,
-                      child: ChartWidget(),
-                    ),
-                  ],
+    return  SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          padding:  const EdgeInsets.symmetric(horizontal: 12),
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height:  ScreenDimensions.screenHeight(context) * 0.01),
+                customContainer(
+                  radius: 12.0,
+                  containerColor: white,
+                  child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Total Devices",style: AppTextStyle.title),
+                      const SizedBox(
+                        height: 220,
+                        child: ChartWidget(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-             SizedBox(height:  ScreenDimensions.screenHeight(context) * 0.02),
-              customContainer(
-                radius: 12.0,
-                containerColor: lightGray,
-                child: Column(
-                  children: [
-                    Text("Total Packages",style: AppTextStyle.title),
-                    const SizedBox(
-                      height: 220,
-                      child: ChartWidget(),
-                    ),
-                  ],
+               SizedBox(height:  ScreenDimensions.screenHeight(context) * 0.02),
+                customContainer(
+                  radius: 12.0,
+                  containerColor: white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Total Packages",style: AppTextStyle.title),
+                      const SizedBox(
+                        height: 220,
+                        child: ChartWidget(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height:  ScreenDimensions.screenHeight(context) * 0.02),
-              customContainer(
-                radius: 12.0,
-                containerColor: lightGray,
-                child: Column(
-                  children: [
-                    Text("Packages Status",style: AppTextStyle.title),
-                    const SizedBox(
-                      height: 220,
-                      child: ChartWidget(),
-                    ),
-                  ],
+                SizedBox(height:  ScreenDimensions.screenHeight(context) * 0.02),
+                customContainer(
+                  radius: 12.0,
+                  containerColor: white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Packages Status",style: AppTextStyle.title),
+                      const SizedBox(
+                        height: 220,
+                        child: ChartWidget(),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              SizedBox(height:  ScreenDimensions.screenHeight(context) * 0.01),
-            ],
-          ),
+                SizedBox(height:  ScreenDimensions.screenHeight(context) * 0.01),
+              ],
+            ),
 
-      ),
-    );
+        );
   }
 }

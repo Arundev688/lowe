@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
@@ -10,6 +11,7 @@ import 'package:lowes/features/onboarding/presentation/pages/mobile/scan_options
 import 'package:lowes/features/onboarding/presentation/pages/mobile/settings.dart';
 import 'package:lowes/features/onboarding/presentation/provider/onboard_provider.dart';
 import 'package:lowes/features/onboarding/presentation/widgets/custom_alert.dart';
+import 'package:lowes/features/onboarding/presentation/widgets/scan_option_sheet.dart';
 import 'package:provider/provider.dart';
 
 class DashboardMobile extends StatefulWidget {
@@ -20,11 +22,19 @@ class DashboardMobile extends StatefulWidget {
 }
 
 class _DashboardMobileState extends State<DashboardMobile> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   final tabs = [
+    /*  const ScanOptions(),*/
     const ChartMobile(),
-    const ScanOptions(),
     const EntitiesList(),
-    const SettingsMobile(),
+    /*const SettingsMobile(),*/
   ];
 
   @override
@@ -33,7 +43,7 @@ class _DashboardMobileState extends State<DashboardMobile> {
         child: PopScope(
             canPop: false,
             onPopInvokedWithResult: (didPop, result) async {
-             await showAlert(
+              await showAlert(
                   title: Constants.exitInfo,
                   image: 'assets/svg/signout.svg',
                   context: context,
@@ -46,90 +56,63 @@ class _DashboardMobileState extends State<DashboardMobile> {
             },
             child: Consumer<OnboardProvider>(builder: (i, provider, p) {
               return Scaffold(
-                backgroundColor: white,
+                backgroundColor: lightGray,
+                extendBody: true,
                 appBar: AppBar(
                   backgroundColor: primary,
                   elevation: 2.0,
                   title:
                       Text(Constants.appTitle, style: AppTextStyle.titleWhite),
                 ),
-                body: tabs[provider.mobileSelectedIndex],
-                bottomNavigationBar: BottomNavigationBar(
-                  currentIndex: provider.mobileSelectedIndex,
-                  type: BottomNavigationBarType.shifting,
-                  selectedItemColor: primary,
-                  elevation: 8.0,
-                  showSelectedLabels: true,
-                  showUnselectedLabels: false,
-                  backgroundColor: white,
-                  selectedLabelStyle: AppTextStyle.textField.copyWith(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w700,
-                    color: textColor,
-                  ),
-                  items: [
-                    BottomNavigationBarItem(
-                        activeIcon: Image.asset(
-                          'assets/png/dashboard.png',
-                          fit: BoxFit.contain,
-                          width: ScreenDimensions.screenWidth(context) * 0.1,
-                          height: ScreenDimensions.screenHeight(context) * 0.05,
-                        ),
-                        icon: Image.asset(
-                          'assets/png/dashboard_unselect.png',
-                          fit: BoxFit.contain,
-                          width: ScreenDimensions.screenWidth(context) * 0.09,
-                          height: ScreenDimensions.screenHeight(context) * 0.05,
-                        ),
-                        label: Constants.mobileDashboardMenu[0]),
-                    BottomNavigationBarItem(
-                        activeIcon: Image.asset(
-                          'assets/png/scanner.png',
-                          fit: BoxFit.contain,
-                          width: ScreenDimensions.screenWidth(context) * 0.1,
-                          height: ScreenDimensions.screenHeight(context) * 0.05,
-                        ),
-                        icon: Image.asset(
-                          'assets/png/scanner_unselect.png',
-                          fit: BoxFit.contain,
-                          width: ScreenDimensions.screenWidth(context) * 0.09,
-                          height: ScreenDimensions.screenHeight(context) * 0.05,
-                        ),
-                        label: Constants.mobileDashboardMenu[1]),
-                    BottomNavigationBarItem(
-                        activeIcon: Image.asset(
-                          'assets/png/list.png',
-                          fit: BoxFit.contain,
-                          width: ScreenDimensions.screenWidth(context) * 0.1,
-                          height: ScreenDimensions.screenHeight(context) * 0.05,
-                        ),
-                        icon: Image.asset(
-                          'assets/png/list_unselect.png',
-                          fit: BoxFit.contain,
-                          width: ScreenDimensions.screenWidth(context) * 0.09,
-                          height: ScreenDimensions.screenHeight(context) * 0.05,
-                        ),
-                        label: Constants.mobileDashboardMenu[2]),
-                    BottomNavigationBarItem(
-                        activeIcon: Image.asset(
-                          'assets/png/settings.png',
-                          fit: BoxFit.contain,
-                          width: ScreenDimensions.screenWidth(context) * 0.1,
-                          height: ScreenDimensions.screenHeight(context) * 0.05,
-                        ),
-                        icon: Image.asset(
-                          'assets/png/settings_unselect.png',
-                          fit: BoxFit.contain,
-                          width: ScreenDimensions.screenWidth(context) * 0.09,
-                          height: ScreenDimensions.screenHeight(context) * 0.05,
-                        ),
-                        label: Constants.mobileDashboardMenu[3]),
-                  ],
-                  onTap: (index) {
-                    provider.updateBottomNavIndex(index);
+                body: tabs[_selectedIndex],
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                floatingActionButton: FloatingActionButton(
+                  backgroundColor: Colors.white,
+                  onPressed: () {
+                    scanOptionAlert(context: context);
                   },
+                  child: Image.asset(
+                    'assets/png/scanner.png',
+                    fit: BoxFit.contain,
+                    width: ScreenDimensions.screenWidth(context) * 0.1,
+                    height: ScreenDimensions.screenHeight(context) * 0.05,
+                  ),
                 ),
+                bottomNavigationBar:BottomAppBar(
+                      color: Colors.white,
+                      height: 60,
+                      shape: const CircularNotchedRectangle(),
+                      notchMargin: 10.0,
+                      elevation: 12.0,
+                      clipBehavior: Clip.antiAlias,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          buildNavBarItem("assets/png/dashboard.png",'assets/png/dashboard_unselect.png',0),
+                          buildNavBarItem('assets/png/list.png','assets/png/list_unselect.png',1),
+                      ],)
+                      ),
+
               );
             })));
   }
+
+  Widget buildNavBarItem(String selectedImage,String image, int index) {
+    return InkWell(
+      onTap: () => _onItemTapped(index),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Image.asset(
+            _selectedIndex == index ? selectedImage : image,
+            fit: BoxFit.fitHeight,
+            width: ScreenDimensions.screenWidth(context) * 0.13,
+            height: ScreenDimensions.screenHeight(context) * 0.04,
+          ),
+        ],
+      ),
+    );
+  }
+
 }

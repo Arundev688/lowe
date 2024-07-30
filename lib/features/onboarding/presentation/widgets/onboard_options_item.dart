@@ -14,7 +14,7 @@ class OnboardOptionsItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return customContainer(
-        containerColor: white,
+        containerColor: lightGray,
         radius: 10.0,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -22,9 +22,9 @@ class OnboardOptionsItem extends StatelessWidget {
           children: [
             Image.asset(
               image,
-              fit: BoxFit.fitHeight,
-              width: ScreenDimensions.screenWidth(context) * 0.35,
-              height: ScreenDimensions.screenHeight(context) * 0.12,
+              fit: BoxFit.contain,
+              width: ScreenDimensions.screenWidth(context) * 0.25,
+              height: ScreenDimensions.screenHeight(context) * 0.1,
             ),
             Center(child: Text(title, style: AppTextStyle.content,textAlign: TextAlign.center,))
           ],

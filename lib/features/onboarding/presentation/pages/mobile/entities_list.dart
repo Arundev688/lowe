@@ -53,6 +53,7 @@ class _EntitiesListState extends State<EntitiesList> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor:lightGray,
       appBar: AppBar(
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -63,7 +64,7 @@ class _EntitiesListState extends State<EntitiesList> {
         ),
       ),
       body: SfDataGridTheme(
-        data:  SfDataGridThemeData(headerColor: primary),
+        data:  const SfDataGridThemeData(headerColor: lightGray),
         child: SfDataGrid(
           source: employeeDataSource,
           columnWidthMode: ColumnWidthMode.auto,
@@ -76,7 +77,7 @@ class _EntitiesListState extends State<EntitiesList> {
                     padding: EdgeInsets.all(16.0),
                     alignment: Alignment.center,
                     child: Text(
-                      'ID',style: TextStyle(color: Colors.white),
+                      'ID',style: TextStyle(color: Colors.black),
                     ))),
             GridColumn(
                 columnName: 'name',
@@ -84,7 +85,7 @@ class _EntitiesListState extends State<EntitiesList> {
                 label: Container(
                     padding: EdgeInsets.all(8.0),
                     alignment: Alignment.center,
-                    child: Text('Name',style: TextStyle(color: Colors.white)))),
+                    child: Text('Name',style: TextStyle(color: Colors.black)))),
             GridColumn(
                 columnName: 'designation',
                 label: Container(
@@ -93,14 +94,14 @@ class _EntitiesListState extends State<EntitiesList> {
                     child: Text(
                       'Status',
                       overflow: TextOverflow.ellipsis,
-                        style: TextStyle(color: Colors.white)
+                        style: TextStyle(color: Colors.black)
                     ))),
             GridColumn(
                 columnName: 'salary',
                 label: Container(
                     padding: EdgeInsets.all(8.0),
                     alignment: Alignment.center,
-                    child: Text('Created by',style: TextStyle(color: Colors.white)))),
+                    child: Text('Created by',style: TextStyle(color: Colors.black)))),
           ],
         ),
       ),

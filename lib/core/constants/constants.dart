@@ -36,10 +36,10 @@ class Constants {
 
   //dashboard mobile
   static const List<String> mobileDashboardMenu = [
+   /* 'Onboard',*/
     'Dashboard',
-    'Onboard',
     'Entitles',
-    'Settings'
+   /* 'Settings'*/
   ];
 
   //settings mobile

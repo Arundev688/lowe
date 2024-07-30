@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:lowes/core/commonwidgets/button.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
@@ -16,6 +17,17 @@ class SettingsMobile extends StatefulWidget {
 }
 
 class _SettingsMobileState extends State<SettingsMobile> {
+
+  late AuthProvider auth;
+
+  @override
+  void initState() {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      auth = Provider.of<AuthProvider>(context, listen: false);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

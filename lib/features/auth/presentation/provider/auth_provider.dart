@@ -1,11 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
-import 'package:lowes/features/auth/data/models/login_model.dart';
 import 'package:lowes/features/auth/domain/usecase/user_login_usecase.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -71,15 +69,32 @@ class AuthProvider extends ChangeNotifier {
     await prefs.setString('userData', userData);
   }
 
+  Future<String?> getUserData() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString('userData');
+  }
+
+  Future<Map<String, dynamic>?> getUserDataAsMap() async {
+    final userDataString = await getUserData();
+    if (userDataString != null) {
+      return jsonDecode(userDataString) as Map<String, dynamic>;
+    }
+    return null;
+  }
+
+  Future<void> getUserDetails() async {
+    final userData = await getUserDataAsMap();
+    if (userData != null) {
+      _userName =  (userData['name'] as String?)!;
+      _role = (userData['role'] as String?)!;
+      _email = (userData['email'] as String?)!;
+    }
+  }
 
 
   Future<void> deleteData(BuildContext context) async {
     final preferences = await SharedPreferences.getInstance();
     await preferences.clear();
-    _userName = "";
-    _email = "";
-    _role = "";
-
     //ToDo
   //  onboardProvider.updateBottomNavIndex(0);
 
@@ -105,9 +120,6 @@ class AuthProvider extends ChangeNotifier {
         await setToken(token: success.tokens?.access?.token.toString());
         await setUserId(id: success.user?.id);
         await setUserData(userData: jsonEncode(success.user));
-        _userName = success.user!.name.toString();
-        _email = success.user!.email.toString();
-        _role = success.user!.role.toString();
         _isLoginLoading = false;
         updatePassword("");
         updateEmail("");

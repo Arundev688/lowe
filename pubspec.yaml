@@ -79,6 +79,8 @@ flutter:
     - assets/png/hutrac_logo.png
     - assets/png/hutrac_logo_12.png
     - assets/png/web_login.png
+    - assets/svg/dashboard.svg
+    - assets/svg/dashboard_unselect.svg
     - assets/png/dashboard.png
     - assets/png/dashboard_unselect.png
     - assets/png/list.png
