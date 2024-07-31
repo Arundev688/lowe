@@ -62,7 +62,26 @@ class _DashboardMobileState extends State<DashboardMobile> {
                   backgroundColor: primary,
                   elevation: 2.0,
                   title:
-                      Text(Constants.appTitle, style: AppTextStyle.titleWhite),
+                      Row(
+                        children: [
+                          Image.asset(
+                            'assets/png/hutrac_icon.png',
+                            fit: BoxFit.contain,
+                            width: ScreenDimensions.screenWidth(context) * 0.1,
+                            height: ScreenDimensions.screenHeight(context) * 0.04,
+                          ),
+                          Text(Constants.appTitle, style: AppTextStyle.titleWhite),
+                        ],
+                      ),
+                  actions: [
+                    IconButton(onPressed: (){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const SettingsMobile(),
+                        ),
+                      );
+                    }, icon:const Icon( Icons.settings,color: Colors.white))
+                  ],
                 ),
                 body: tabs[_selectedIndex],
                 floatingActionButtonLocation:
@@ -70,7 +89,7 @@ class _DashboardMobileState extends State<DashboardMobile> {
                 floatingActionButton: FloatingActionButton(
                   backgroundColor: Colors.white,
                   onPressed: () {
-                    scanOptionAlert(context: context);
+                    scanOptionAlert(context: context,provider: provider);
                   },
                   child: Image.asset(
                     'assets/png/scanner.png',

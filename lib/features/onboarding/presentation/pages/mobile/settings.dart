@@ -30,120 +30,122 @@ class _SettingsMobileState extends State<SettingsMobile> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: white,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(Constants.profileTitle, style: AppTextStyle.subTitle),
-          ),
-          SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: ScreenDimensions.screenHeight(context) * 0.01,
-                horizontal: ScreenDimensions.screenWidth(context) * 0.03),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(Constants.name, style: AppTextStyle.content),
-                ),
-                Expanded(
-                    flex: 1,
-                    child: Text(
-                      context.read<AuthProvider>().userName,
-                      textAlign: TextAlign.end,
-                      style: AppTextStyle.contentBold,
-                    )),
-              ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: white,
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(Constants.profileTitle, style: AppTextStyle.subTitle),
             ),
-          ),
-          SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
-          const Divider(
-            thickness: 1.5,
-            color: primaryLight,
-          ),
-          SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: ScreenDimensions.screenHeight(context) * 0.01,
-                horizontal: ScreenDimensions.screenWidth(context) * 0.03),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(Constants.email, style: AppTextStyle.content),
-                ),
-                Expanded(
+            SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: ScreenDimensions.screenHeight(context) * 0.01,
+                  horizontal: ScreenDimensions.screenWidth(context) * 0.03),
+              child: Row(
+                children: [
+                  Expanded(
                     flex: 1,
-                    child: Text(
-                      context.read<AuthProvider>().email,
-                      textAlign: TextAlign.end,
-                      style: AppTextStyle.contentBold,
-                    )),
-              ],
+                    child: Text(Constants.name, style: AppTextStyle.content),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        context.read<AuthProvider>().userName,
+                        textAlign: TextAlign.end,
+                        style: AppTextStyle.contentBold,
+                      )),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
-          const Divider(
-            thickness: 1.5,
-            color: primaryLight,
-          ),
-          SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
-          Padding(
-            padding: EdgeInsets.symmetric(
-                vertical: ScreenDimensions.screenHeight(context) * 0.01,
-                horizontal: ScreenDimensions.screenWidth(context) * 0.03),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 1,
-                  child: Text(Constants.role, style: AppTextStyle.content),
-                ),
-                Expanded(
+            SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
+            const Divider(
+              thickness: 1.5,
+              color: primaryLight,
+            ),
+            SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: ScreenDimensions.screenHeight(context) * 0.01,
+                  horizontal: ScreenDimensions.screenWidth(context) * 0.03),
+              child: Row(
+                children: [
+                  Expanded(
                     flex: 1,
-                    child: Text(
-                      context.read<AuthProvider>().role,
-                      textAlign: TextAlign.end,
-                      style: AppTextStyle.contentBold,
-                    )),
-              ],
+                    child: Text(Constants.email, style: AppTextStyle.content),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        context.read<AuthProvider>().email,
+                        textAlign: TextAlign.end,
+                        style: AppTextStyle.contentBold,
+                      )),
+                ],
+              ),
             ),
-          ),
-          SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
-          const Divider(
-            thickness: 1.5,
-            color: primaryLight,
-          ),
-        ],
-      ),
-      bottomSheet: Container(
-        color: white,
-        height: ScreenDimensions.screenHeight(context) * 0.08,
-        padding: EdgeInsets.symmetric(
-            vertical: ScreenDimensions.screenHeight(context) * 0.01,
-            horizontal: ScreenDimensions.screenWidth(context) * 0.05),
-        child: Center(
-          child: CustomButton(
-            text: Constants.logout,
-            buttonColor: errorLight,
-            textStyle: AppTextStyle.textError,
-            borderRadius: 15,
-            height: ScreenDimensions.screenHeight(context) * 0.05,
-            onPressed: () async{
-              await showAlert(
-                  title: Constants.logoutInfo,
-                  image: 'assets/svg/signout.svg',
-                  context: context,
-                  onYes: () {
-                    context.read<AuthProvider>().deleteData(context);
-                  },
-                  onNo: () {
-                    Navigator.pop(context);
-                  });
-            },
+            SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
+            const Divider(
+              thickness: 1.5,
+              color: primaryLight,
+            ),
+            SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
+            Padding(
+              padding: EdgeInsets.symmetric(
+                  vertical: ScreenDimensions.screenHeight(context) * 0.01,
+                  horizontal: ScreenDimensions.screenWidth(context) * 0.03),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 1,
+                    child: Text(Constants.role, style: AppTextStyle.content),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Text(
+                        context.read<AuthProvider>().role,
+                        textAlign: TextAlign.end,
+                        style: AppTextStyle.contentBold,
+                      )),
+                ],
+              ),
+            ),
+            SizedBox(height: ScreenDimensions.screenHeight(context) * 0.01),
+            const Divider(
+              thickness: 1.5,
+              color: primaryLight,
+            ),
+          ],
+        ),
+        bottomSheet: Container(
+          color: white,
+          height: ScreenDimensions.screenHeight(context) * 0.08,
+          padding: EdgeInsets.symmetric(
+              vertical: ScreenDimensions.screenHeight(context) * 0.01,
+              horizontal: ScreenDimensions.screenWidth(context) * 0.05),
+          child: Center(
+            child: CustomButton(
+              text: Constants.logout,
+              buttonColor: errorLight,
+              textStyle: AppTextStyle.textError,
+              borderRadius: 15,
+              height: ScreenDimensions.screenHeight(context) * 0.05,
+              onPressed: () async{
+                await showAlert(
+                    title: Constants.logoutInfo,
+                    image: 'assets/svg/signout.svg',
+                    context: context,
+                    onYes: () {
+                      context.read<AuthProvider>().deleteData(context);
+                    },
+                    onNo: () {
+                      Navigator.pop(context);
+                    });
+              },
+            ),
           ),
         ),
       ),

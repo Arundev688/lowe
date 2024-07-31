@@ -17,7 +17,7 @@ class _ChartMobileState extends State<ChartMobile> {
   Widget build(BuildContext context) {
     return  SingleChildScrollView(
           physics: const BouncingScrollPhysics(),
-          padding:  const EdgeInsets.symmetric(horizontal: 12),
+          padding: EdgeInsets.only(left: 12,right: 12,bottom:  ScreenDimensions.screenHeight(context) * 0.09),
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -28,10 +28,13 @@ class _ChartMobileState extends State<ChartMobile> {
                   child: Column(
                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Total Devices",style: AppTextStyle.title),
-                      const SizedBox(
-                        height: 220,
-                        child: ChartWidget(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 7,top: 6),
+                        child: Text("Total Devices",style: AppTextStyle.title),
+                      ),
+                      SizedBox(
+                        height:  ScreenDimensions.screenHeight(context) * 0.25,
+                        child: const ChartWidget(),
                       ),
                     ],
                   ),
@@ -43,10 +46,13 @@ class _ChartMobileState extends State<ChartMobile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Total Packages",style: AppTextStyle.title),
-                      const SizedBox(
-                        height: 220,
-                        child: ChartWidget(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 7,top: 6),
+                        child: Text("Total Packages",style: AppTextStyle.title),
+                      ),
+                      SizedBox(
+                        height:  ScreenDimensions.screenHeight(context) * 0.25,
+                        child: const ChartWidget(),
                       ),
                     ],
                   ),
@@ -58,10 +64,13 @@ class _ChartMobileState extends State<ChartMobile> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Packages Status",style: AppTextStyle.title),
-                      const SizedBox(
-                        height: 220,
-                        child: ChartWidget(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 7,top: 6),
+                        child: Text("Packages Status",style: AppTextStyle.title),
+                      ),
+                      SizedBox(
+                        height:  ScreenDimensions.screenHeight(context) * 0.25,
+                        child: const ChartWidget(),
                       ),
                     ],
                   ),

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:lowes/core/theme/color.dart';
-import 'package:lowes/core/theme/fonts.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 
@@ -99,9 +98,9 @@ class _EntitiesListState extends State<EntitiesList> {
             GridColumn(
                 columnName: 'salary',
                 label: Container(
-                    padding: EdgeInsets.all(8.0),
+                    padding:const EdgeInsets.all(8.0),
                     alignment: Alignment.center,
-                    child: Text('Created by',style: TextStyle(color: Colors.black)))),
+                    child: const Text('Created by',style: TextStyle(color: Colors.black)))),
           ],
         ),
       ),

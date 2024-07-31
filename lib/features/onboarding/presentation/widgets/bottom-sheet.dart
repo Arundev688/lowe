@@ -2,158 +2,46 @@ import 'package:flutter/material.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
-import 'package:lowes/features/onboarding/presentation/widgets/elevation_container.dart';
 
 class BottomModalSheet extends StatelessWidget {
+  final String image;
+  final String title;
+
+  const BottomModalSheet({required this.image, required this.title, super.key});
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-            height: 5,
-            width: 52,
-            color: Colors.black,
-            margin: EdgeInsets.only(bottom: 10)),
-        Expanded(
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
+    return  Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+              width: ScreenDimensions.screenWidth(context) * 0.2,
+              height: ScreenDimensions.screenHeight(context) * 0.1,
+              padding: const EdgeInsets.all(12),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(blurRadius: 1, color: lightGray, spreadRadius: 1)
+                ],
               ),
-            ),
-            width: double.infinity,
-            child: Column(
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: IconButton(
-                    onPressed: (){
-                         Navigator.pop(context);
-                    },
-                    icon: Icon(Icons.close),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child:customContainer(
-                            containerColor: primaryLight,
-                            radius: 12,
-                            child: Column(
-                              children: [
-                                Image.asset(
-                                  "assets/png/package.png",
-                                  fit: BoxFit.contain,
-                                  width: ScreenDimensions.screenWidth(context) * 0.25,
-                                  height: ScreenDimensions.screenHeight(context) * 0.1,
-                                ),
-                                Center(child: Text("Title", style: AppTextStyle.content,textAlign: TextAlign.center,))
-                              ],
-                            )
-                        ), ),
-                    Expanded(
-                      flex: 1,
-                      child:customContainer(
-                          containerColor: primaryLight,
-                          radius: 12,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "assets/png/package.png",
-                                fit: BoxFit.contain,
-                                width: ScreenDimensions.screenWidth(context) * 0.25,
-                                height: ScreenDimensions.screenHeight(context) * 0.1,
-                              ),
-                              Center(child: Text("Title", style: AppTextStyle.content,textAlign: TextAlign.center,))
-                            ],
-                          )
-                      ), ),
-                    Expanded(
-                      flex: 1,
-                      child:customContainer(
-                          containerColor: primaryLight,
-                          radius: 12,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "assets/png/package.png",
-                                fit: BoxFit.contain,
-                                width: ScreenDimensions.screenWidth(context) * 0.25,
-                                height: ScreenDimensions.screenHeight(context) * 0.1,
-                              ),
-                              Center(child: Text("Title", style: AppTextStyle.content,textAlign: TextAlign.center,))
-                            ],
-                          )
-                      ), ),
-
-                  ],
-                ),
-                 SizedBox(height: 10),
-                Row(
-                  children: [
-                    Expanded(
-                      flex: 1,
-                      child:customContainer(
-                          containerColor: primaryLight,
-                          radius: 12,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "assets/png/package.png",
-                                fit: BoxFit.contain,
-                                width: ScreenDimensions.screenWidth(context) * 0.25,
-                                height: ScreenDimensions.screenHeight(context) * 0.1,
-                              ),
-                              Center(child: Text("Title", style: AppTextStyle.content,textAlign: TextAlign.center,))
-                            ],
-                          )
-                      ), ),
-                    Expanded(
-                      flex: 1,
-                      child:customContainer(
-                          containerColor: primaryLight,
-                          radius: 12,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "assets/png/package.png",
-                                fit: BoxFit.contain,
-                                width: ScreenDimensions.screenWidth(context) * 0.25,
-                                height: ScreenDimensions.screenHeight(context) * 0.1,
-                              ),
-                              Center(child: Text("Title", style: AppTextStyle.content,textAlign: TextAlign.center,))
-                            ],
-                          )
-                      ), ),
-                    Expanded(
-                      flex: 1,
-                      child:customContainer(
-                          containerColor: primaryLight,
-                          radius: 12,
-                          child: Column(
-                            children: [
-                              Image.asset(
-                                "assets/png/package.png",
-                                fit: BoxFit.contain,
-                                width: ScreenDimensions.screenWidth(context) * 0.25,
-                                height: ScreenDimensions.screenHeight(context) * 0.1,
-                              ),
-                              Center(child: Text("Title", style: AppTextStyle.content,textAlign: TextAlign.center,))
-                            ],
-                          )
-                      ), ),
-
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
+              child: Image.asset(image, fit: BoxFit.contain)),
+          const SizedBox(height: 2),
+          Wrap(
+            direction: Axis.horizontal,
+            alignment: WrapAlignment.center,
+             children: [
+               Text(
+                 title,
+                 style:
+                 AppTextStyle.textPrime.copyWith(fontSize: 12, color: textColor),
+                 maxLines: 1,
+                 overflow: TextOverflow.ellipsis,
+               ),
+             ],
+           )
+        ],
+      );
   }
 }

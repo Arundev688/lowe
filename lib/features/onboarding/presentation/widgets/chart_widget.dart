@@ -7,10 +7,12 @@ class ChartWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int _selectedIndex = -1;
+
     return SfCircularChart(
         legend: const Legend(isVisible: true,position: LegendPosition.right),
+        selectionGesture: ActivationMode.singleTap,
         series: <CircularSeries>[
-          // Initialize line series
           PieSeries<ChartData, String>(
               dataSource: [
                 ChartData('Sensor', 25),
@@ -20,8 +22,15 @@ class ChartWidget extends StatelessWidget {
               ],
               xValueMapper: (ChartData data, _) => data.x,
               yValueMapper: (ChartData data, _) => data.y,
+              enableTooltip: true,
               // Render the data label
-              dataLabelSettings:const DataLabelSettings(isVisible : true)
+              dataLabelSettings:const DataLabelSettings(isVisible : true),
+            explode: true, // Enable explode animation
+            explodeOffset: '10%', // Adjust explode offset as needed
+            explodeIndex: _selectedIndex, // Index of the exploded slice
+            onPointTap: (point) {
+                _selectedIndex = point.seriesIndex!;
+            },
           )
         ]
     );

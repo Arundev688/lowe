@@ -51,8 +51,8 @@ class Constants {
 
   //scanning options screen
   static const List<String> scanningOption = [
-   "Onboard Package",
-   "Onboard Sensor",
+   "Onboard",
+/*   "Onboard Sensor",*/
    "Onboard & Associate",
    "Onboard Gateway",
    "Disassociate"

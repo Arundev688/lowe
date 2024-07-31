@@ -113,24 +113,24 @@ class OnboardProvider extends ChangeNotifier {
 
 
   List<Map<String,String>> scanOptions = [
-    {
+   /* {
       'scan_option': Constants.scanningOption[0],
       'image': 'assets/png/package.png'
-    },
+    },*/
     {
-      'scan_option': Constants.scanningOption[1],
+      'scan_option': Constants.scanningOption[0],
       'image': 'assets/png/sensor.png'
     },
     {
-      'scan_option': Constants.scanningOption[2],
+      'scan_option': Constants.scanningOption[1],
       'image': 'assets/png/associate.png'
     },
     {
-      'scan_option': Constants.scanningOption[3],
+      'scan_option': Constants.scanningOption[2],
       'image': 'assets/png/gateway.png'
     },
     {
-      'scan_option': Constants.scanningOption[4],
+      'scan_option': Constants.scanningOption[3],
       'image': 'assets/png/associate.png'
     },
   ];
