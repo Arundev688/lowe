@@ -1,16 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:lowes/core/theme/color.dart';
+import 'package:lowes/features/onboarding/presentation/widgets/entity_list_items.dart';
 
-
-class EntitieList2 extends StatefulWidget {
-  const EntitieList2({super.key});
+class EntityList2 extends StatefulWidget {
+  const EntityList2({super.key});
 
   @override
-  State<EntitieList2> createState() => _EntitieList2State();
+  State<EntityList2> createState() => _EntityList2State();
 }
 
-class _EntitieList2State extends State<EntitieList2> {
+class _EntityList2State extends State<EntityList2> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: ListView.builder(
+                itemCount: 1,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return const Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Mutualfundlist(
+                    ),
+                  );
+                }),
+          )
+        ],
+      );
   }
 }

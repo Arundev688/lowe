@@ -7,4 +7,6 @@ class ApiRoutes{
   String onBoard = "${baseUrl}v1/onboard";
   String association = "${baseUrl}v1/association/by-scan";
 
+  String packageOnboard = "${baseUrl}v1/package/on-board";
+
 }

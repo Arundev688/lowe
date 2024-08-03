@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
@@ -16,9 +17,9 @@ class BottomModalSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-              width: ScreenDimensions.screenWidth(context) * 0.2,
+              width: ScreenDimensions.screenWidth(context) * 0.15,
               height: ScreenDimensions.screenHeight(context) * 0.1,
-              padding: const EdgeInsets.all(12),
+              padding: const EdgeInsets.all(8),
               decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
@@ -26,21 +27,24 @@ class BottomModalSheet extends StatelessWidget {
                   BoxShadow(blurRadius: 1, color: lightGray, spreadRadius: 1)
                 ],
               ),
-              child: Image.asset(image, fit: BoxFit.contain)),
-          const SizedBox(height: 2),
-          Wrap(
-            direction: Axis.horizontal,
-            alignment: WrapAlignment.center,
-             children: [
-               Text(
-                 title,
-                 style:
-                 AppTextStyle.textPrime.copyWith(fontSize: 12, color: textColor),
-                 maxLines: 1,
-                 overflow: TextOverflow.ellipsis,
-               ),
-             ],
-           )
+              child: SvgPicture.asset(image, fit: BoxFit.contain)),
+          SizedBox(
+           width: ScreenDimensions.screenWidth(context) * 0.15,
+            child: Wrap(
+              direction: Axis.horizontal,
+              alignment: WrapAlignment.center,
+               children: [
+                 Text(
+                   title,
+                   textAlign: TextAlign.center,
+                   style:
+                   AppTextStyle.textPrime.copyWith(fontSize: 12, color: black),
+                   maxLines: 2,
+                   overflow: TextOverflow.ellipsis,
+                 ),
+               ],
+             ),
+          )
         ],
       );
   }

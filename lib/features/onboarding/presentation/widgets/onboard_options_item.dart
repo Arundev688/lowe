@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
@@ -20,13 +21,20 @@ class OnboardOptionsItem extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset(
+            SvgPicture.asset(
               image,
               fit: BoxFit.contain,
-              width: ScreenDimensions.screenWidth(context) * 0.25,
+              width: ScreenDimensions.screenWidth(context) * 0.15,
               height: ScreenDimensions.screenHeight(context) * 0.1,
             ),
-            Center(child: Text(title, style: AppTextStyle.content,textAlign: TextAlign.center,))
+            Container(
+                alignment: Alignment.center,
+                width: ScreenDimensions.screenWidth(context) * 0.15,
+                child: Text(
+                  title,
+                  style: AppTextStyle.content,
+                  textAlign: TextAlign.center,
+                ))
           ],
         ));
   }

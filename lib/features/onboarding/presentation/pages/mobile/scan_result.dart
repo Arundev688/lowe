@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lowes/core/commonwidgets/button.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
-import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
 import 'package:lowes/core/theme/color.dart';
 import 'package:lowes/core/theme/fonts.dart';
@@ -11,28 +10,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ScanResult extends StatefulWidget {
   final String? scanResult;
+  final int? position;
   final String? title;
 
-  const ScanResult({super.key, this.scanResult, this.title});
+  const ScanResult({super.key, this.scanResult, this.position, this.title});
 
   @override
   State<ScanResult> createState() => _ScanResultState();
 }
 
 class _ScanResultState extends State<ScanResult> {
-  bool _isAssociation = false;
-
   @override
   void initState() {
-    if (widget.title == Constants.scanAssociate) {
-      setState(() {
-        _isAssociation = true;
-      });
-    } else {
-      setState(() {
-        _isAssociation = false;
-      });
-    }
     super.initState();
   }
 
@@ -40,6 +29,17 @@ class _ScanResultState extends State<ScanResult> {
   Widget build(BuildContext context) {
     return Consumer<OnboardProvider>(builder: (ctx, provider, child) {
       return Scaffold(
+        appBar: AppBar(
+          backgroundColor: white,
+          elevation: 8,
+          title: Text(widget.title ?? "", style: AppTextStyle.title),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: primary),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
         body: Center(
           child: Container(
             width: ScreenDimensions.screenWidth(context) * 0.98,
@@ -52,7 +52,7 @@ class _ScanResultState extends State<ScanResult> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _isAssociation
+                widget.position == 3
                     ? Column(
                         children: [
                           Text("Package Info  : ${provider.packageData}"),
@@ -68,7 +68,7 @@ class _ScanResultState extends State<ScanResult> {
                     : const SizedBox(),
                 provider.isAssociation
                     ? association(provider, context)
-                    : onboard(provider, context)
+                    : onboard(provider, context, widget.position ?? 0)
               ],
             ),
           ),
@@ -77,7 +77,7 @@ class _ScanResultState extends State<ScanResult> {
     });
   }
 
-  Widget onboard(OnboardProvider provider, BuildContext context) {
+  Widget onboard(OnboardProvider provider, BuildContext context, int position) {
     return Column(
       children: [
         Text(widget.title.toString(), style: AppTextStyle.title),
@@ -122,7 +122,19 @@ class _ScanResultState extends State<ScanResult> {
                                     await SharedPreferences.getInstance();
                                 var userId = prefs.getString('userId');
                                 if (!context.mounted) return;
-                                if (provider.sensorData.toString().isNotEmpty ||
+
+                                //position 0 means package so we are calling the onboard package
+                                if (position == 0) {
+                                  provider.onboardPackage(
+                                      "barcode",
+                                      provider.scanResult,
+                                      context,
+                                      userId ?? "66911c4e29c65e045b96d765");
+                                } else {
+
+                                }
+
+                           /*     if (provider.sensorData.toString().isNotEmpty ||
                                     provider.packageData
                                         .toString()
                                         .isNotEmpty) {
@@ -131,7 +143,7 @@ class _ScanResultState extends State<ScanResult> {
                                       provider.scanResult,
                                       context,
                                       userId.toString(),
-                                      widget.title.toString(),
+                                      widget.position.toString(),
                                       2);
                                 } else {
                                   provider.onboard(
@@ -139,9 +151,9 @@ class _ScanResultState extends State<ScanResult> {
                                       provider.scanResult,
                                       context,
                                       userId.toString(),
-                                      widget.title.toString(),
+                                      widget.position.toString(),
                                       1);
-                                }
+                                }*/
                               },
                       ),
                     ),

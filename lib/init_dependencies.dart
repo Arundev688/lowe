@@ -21,19 +21,7 @@ Future<void> initDepedencies() async {
   _initAuthState();
   _initOnboardProvider();
 
-/*  serviceLocator.registerLazySingleton(() =>
-      AuthProvider(
-          loginUseCase: serviceLocator(),
-          authStateProvider: serviceLocator(),
-          onboardProvider: serviceLocator()));
 
-  serviceLocator.registerLazySingleton(() =>
-      OnboardProvider(
-          onboardUseCase: serviceLocator(),
-          authStateProvider: serviceLocator(),
-          associationUseCase: serviceLocator(),
-          authProvider: serviceLocator())
-  );*/
 
   final val = ApiRoutes.baseUrl = baseUrl;
   serviceLocator.registerLazySingleton(() => val);

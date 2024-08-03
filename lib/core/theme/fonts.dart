@@ -32,6 +32,16 @@ class AppTextStyle {
   static TextStyle content = GoogleFonts.geologica(
       textStyle: const TextStyle(color: textColor, fontWeight: FontWeight.w400,fontSize: 16));
 
+  static TextStyle contentLight = GoogleFonts.geologica(
+      textStyle: const TextStyle(color: lightText, fontWeight: FontWeight.w400,fontSize: 16));
+
+
+  static TextStyle content1 = GoogleFonts.geologica(
+      textStyle: const TextStyle(color: textColor, fontWeight: FontWeight.w400,fontSize: 13));
+
+  static TextStyle contentLight1 = GoogleFonts.geologica(
+      textStyle: const TextStyle(color: lightText, fontWeight: FontWeight.w400,fontSize: 13));
+
   static TextStyle contentBold = GoogleFonts.geologica(
       textStyle: const TextStyle(color: black, fontWeight: FontWeight.bold,fontSize: 16));
 

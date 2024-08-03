@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/toast.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/error/exceptions.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_provider.dart';
 import 'package:lowes/features/auth/presentation/provider/auth_state_provider.dart';
+import 'package:lowes/features/onboarding/data/model/package_onboard_model.dart';
+import 'package:lowes/features/onboarding/data/source/onboard_remote_data_source.dart';
 import 'package:lowes/features/onboarding/domain/entities/domain_onboard.dart';
 import 'package:lowes/features/onboarding/domain/usecase/association_usecase.dart';
 import 'package:lowes/features/onboarding/domain/usecase/onboard_usecase.dart';
 import 'package:lowes/features/onboarding/presentation/pages/mobile/custom_scanner.dart';
+import 'package:lowes/features/onboarding/presentation/pages/mobile/dashboard.dart';
+import 'package:lowes/features/onboarding/presentation/pages/mobile/scan_result.dart';
 
 class OnboardProvider extends ChangeNotifier {
   final OnboardUseCase onboardUseCase;
@@ -19,8 +24,12 @@ class OnboardProvider extends ChangeNotifier {
     required this.authStateProvider,
     required this.associationUseCase
   });
+  OnboardRemoteDateSourceImpl apiService = OnboardRemoteDateSourceImpl();
+
 
   String _scanResult ='';
+
+  PackageOnboardModel? _packageOnboardModel;
 
   String _sensorDate = "";
   String _packageData = "";
@@ -50,6 +59,7 @@ class OnboardProvider extends ChangeNotifier {
   int _mobileSelectedIndex = 0;
 
   int get mobileSelectedIndex => _mobileSelectedIndex;
+
 
 
   updateBottomNavIndex(int index) {
@@ -93,7 +103,8 @@ class OnboardProvider extends ChangeNotifier {
            notifyListeners();
          } else {
            if (count < 2) {
-             scanBarcode(context);
+             //ToDo replace the position dynamically
+             scanBarcode(context,0,"");
              notifyListeners();
            } else {
              _isAssociation = true;
@@ -113,26 +124,36 @@ class OnboardProvider extends ChangeNotifier {
 
 
   List<Map<String,String>> scanOptions = [
-   /* {
-      'scan_option': Constants.scanningOption[0],
-      'image': 'assets/png/package.png'
-    },*/
     {
       'scan_option': Constants.scanningOption[0],
-      'image': 'assets/png/sensor.png'
+      'image': 'assets/svg/onboard_package.svg'
     },
     {
       'scan_option': Constants.scanningOption[1],
-      'image': 'assets/png/associate.png'
+      'image': 'assets/svg/onboard_sensor.svg'
     },
     {
       'scan_option': Constants.scanningOption[2],
-      'image': 'assets/png/gateway.png'
+      'image': 'assets/svg/onboard_gateway.svg'
     },
     {
       'scan_option': Constants.scanningOption[3],
-      'image': 'assets/png/associate.png'
+      'image': 'assets/svg/associate.svg'
     },
+    {
+      'scan_option': Constants.scanningOption[4],
+      'image': 'assets/svg/unlink_asset.svg'
+    },
+  ];
+
+  List<String> gatewayCategory = [
+    'BDC',
+    'XDC'
+  ];
+
+  List<String> gatewayTypes = [
+    'Non-Moving',
+    'Moving'
   ];
 
   Future<void> association(String packageData,
@@ -171,7 +192,7 @@ class OnboardProvider extends ChangeNotifier {
   }
 
 
-  Future<String?> scanBarcode(BuildContext context) async {
+  Future<String?> scanBarcode(BuildContext context,int position,String title) async {
     try{
       final result = await Navigator.push(
         context,
@@ -181,6 +202,12 @@ class OnboardProvider extends ChangeNotifier {
       );
       if (result != null && result.toString() != "-1" ) {
         setScanResult(result);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ScanResult(scanResult: result,position: position,title: title),
+          ),
+        );
       } else {
         setScanResult("");
       }
@@ -189,6 +216,24 @@ class OnboardProvider extends ChangeNotifier {
       return e.toString();
     }
 
+  }
+
+  void onboardPackage(String type, String data, BuildContext context,String userId,) async {
+    try {
+      final response = await apiService.onboardPackage(type: type,data: data,createdBy: userId);
+      if(response.toString() != "" && response.toString() != "null"){
+        if (!context.mounted) return;
+        showSnackBar(context, "Association Success");
+      } else {
+        if (!context.mounted) return;
+        showSnackBar(context, "Association Failed",true);
+      }
+    } catch (e) {
+      showSnackBar(context, e.toString(),true);
+    } finally {
+      context.go('/dashboardMobile');
+      notifyListeners();
+    }
   }
 
 

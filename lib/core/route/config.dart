@@ -69,13 +69,13 @@ class MyAppRouter {
     ),
 
 
-    GoRoute(
+   /* GoRoute(
       name: "/ScanResult",
       path: "/ScanResult",
       builder: (context, state) => ScanResult(
         scanResult: state.pathParameters['scanResult'],
-        title:state.pathParameters['scanTitle'],
+        position:state.pathParameters['scanTitle'],
       ),
-    )
+    )*/
   ]);
 }

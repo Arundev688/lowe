@@ -50,6 +50,8 @@ dependencies:
   flutter_svg: ^2.0.10+1
   simple_barcode_scanner: ^0.1.1
   flutter_native_splash: ^2.4.1
+  dropdown_button2: ^2.3.9
+  modal_bottom_sheet: ^3.0.0
 
 
 dev_dependencies:
@@ -79,9 +81,8 @@ flutter:
     - assets/png/hutrac_logo.png
     - assets/png/hutrac_logo_12.png
     - assets/png/hutrac_icon.png
+    - assets/png/splash.png
     - assets/png/web_login.png
-    - assets/svg/dashboard.svg
-    - assets/svg/dashboard_unselect.svg
     - assets/png/dashboard.png
     - assets/png/dashboard_unselect.png
     - assets/png/list.png
@@ -95,6 +96,17 @@ flutter:
     - assets/png/gateway.png
     - assets/png/package.png
     - assets/png/sensor.png
+    - assets/svg/dashboard.svg
+    - assets/svg/dashboard_select.svg
+    - assets/svg/list.svg
+    - assets/svg/list_select.svg
+    - assets/svg/scanner1.svg
+    - assets/svg/scanner1_select.svg
+    - assets/svg/onboard_gateway.svg
+    - assets/svg/onboard_package.svg
+    - assets/svg/onboard_sensor.svg
+    - assets/svg/associate.svg
+    - assets/svg/unlink_asset.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

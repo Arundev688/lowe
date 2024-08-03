@@ -1,5 +1,4 @@
 class Constants {
-
   static const appTitle = 'Hutrac';
 
   //login screen
@@ -12,10 +11,11 @@ class Constants {
   static const signUpHere = ' Sign up here';
 
   //forget screen
- static const forgetNotes = 'Please enter your registered email to get reset link';
- static const sendResetLink = 'Send Reset Link';
+  static const forgetNotes =
+      'Please enter your registered email to get reset link';
+  static const sendResetLink = 'Send Reset Link';
 
- //reset screen
+  //reset screen
   static const resetTitle = 'Reset your password';
   static const confirmPassword = 'Confirm Password';
   static const resetPassword = 'Reset Password';
@@ -33,30 +33,27 @@ class Constants {
   static const scanAssociate = 'Scan and associate';
   static const exitInfo = 'Are you sure want to exit app?';
 
-
   //dashboard mobile
   static const List<String> mobileDashboardMenu = [
-   /* 'Onboard',*/
+    /* 'Onboard',*/
     'Dashboard',
     'Entitles',
-   /* 'Settings'*/
+    /* 'Settings'*/
   ];
 
   //settings mobile
   static const profileTitle = "Personal Info";
   static const logout = "Logout";
-  static const name= "Name";
+  static const name = "Name";
   static const logoutInfo = "Are you sure want to logout?";
   static const role = "Role";
 
   //scanning options screen
   static const List<String> scanningOption = [
-   "Onboard",
-/*   "Onboard Sensor",*/
-   "Onboard & Associate",
-   "Onboard Gateway",
-   "Disassociate"
- ];
-
-
+    "Onboard Package",
+    "Onboard Sensor",
+    "Onboard Gateway",
+    "Associate",
+    "Disassociate"
+  ];
 }

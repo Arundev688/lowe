@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lowes/core/commonwidgets/button.dart';
 import 'package:lowes/core/constants/constants.dart';
 import 'package:lowes/core/responsive/dimension.dart';
@@ -33,6 +34,16 @@ class _SettingsMobileState extends State<SettingsMobile> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: white,
+        appBar: AppBar(
+          backgroundColor: primary,
+          title: Text("Settings",style: AppTextStyle.title.copyWith(color: white)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios,color: white),
+            onPressed: (){
+              context.go('/dashboardMobile');
+            },
+          ),
+        ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
